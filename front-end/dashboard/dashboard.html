@@ -1,0 +1,39 @@
+<link rel="stylesheet" href="../dashboard/dashboard.css">
+
+<div class="dashboard">
+    <div class="cards">
+        <div class="card receita">
+            <div class="card-icon">↑</div>
+            <h3>Receitas</h3>
+            <span id="totalReceitas" class="loading">Carregando...</span>
+        </div>
+
+        <div class="card despesa">
+            <div class="card-icon">↓</div>
+            <h3>Despesas</h3>
+            <span id="totalDespesas" class="loading">Carregando...</span>
+        </div>
+
+        <div class="card saldo">
+            <div class="card-icon">💰</div>
+            <h3>Saldo</h3>
+            <span id="saldo" class="loading">Carregando...</span>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="grafico-container">
+            <h3>Visão Geral Financeira</h3>
+            <canvas id="graficoFinanceiro"></canvas>
+        </div>
+
+        <div class="transacoes-container">
+            <h3>Transações Recentes</h3>
+            <div id="listaTransacoes" class="loading-transacoes">
+                <p>Carregando transações...</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../Login/utils.js"></script>

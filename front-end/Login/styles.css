@@ -1,0 +1,201 @@
+:root {
+    --bg1: #eef2ff;
+    --bg2: #f8faff;
+    --card: #ffffff;
+
+    --accent: #2563eb;
+    --accent2: #10b981;
+    --accent3: #f59e0b;
+    --muted: #748096;
+
+    --shadow: 0 10px 25px rgba(0,0,0,0.08);
+
+    font-family: "Poppins", system-ui, sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    height: 100%;
+    background: linear-gradient(135deg, var(--bg1), var(--bg2));
+    color: #1e293b;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+  background: linear-gradient(135deg, var(--bg1), var(--bg2));
+}
+
+.container {
+    max-width: 900px;
+    margin: 6vh auto;
+    padding: 24px;
+}
+
+h1 {
+    text-align: center;
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.subtitle {
+    text-align: center;
+    color: var(--muted);
+    font-size: 15px;
+    margin-bottom: 26px;
+}
+
+.users {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.user-card {
+    width: 300px;
+    padding: 20px;
+
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    background: var(--card);
+    border-radius: 18px;
+    border: 1px solid rgba(0,0,0,0.05);
+
+    box-shadow: var(--shadow);
+
+    cursor: pointer;
+
+    transition: 
+        transform .15s ease,
+        box-shadow .15s ease,
+        border-color .15s ease;
+}
+
+.user-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.12);
+    border-color: var(--accent);
+}
+
+.user-card[aria-pressed="true"] {
+    transform: translateY(-6px) scale(1.02);
+    border-color: var(--accent);
+    box-shadow: 0 16px 40px rgba(37, 99, 235, 0.25);
+}
+
+.avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #ddd;
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+.user-card:hover .avatar {
+    transform: scale(1.07);
+}
+
+.info h2 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.info p {
+    margin: 6px 0 0;
+    color: var(--muted);
+    font-size: 14px;
+}
+
+.actions {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.btn {
+    padding: 12px 22px;
+    border: none;
+    border-radius: 14px;
+
+    background: linear-gradient(135deg, var(--accent), var(--accent3));
+    color: white;
+
+    font-size: 16px;
+    font-weight: 600;
+
+    cursor: pointer;
+    transition: .15s ease;
+    box-shadow: var(--shadow);
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.18);
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/**/
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hidden {
+  display: none;
+}
+
+.modal-content {
+  background: white;
+  padding: 24px;
+  border-radius: 16px;
+  width: 320px;
+  text-align: center;
+}
+
+.modal-content input {
+  width: 100%;
+  padding: 10px;
+  margin: 16px 0;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.error {
+  color: red;
+  margin-top: 10px;
+}

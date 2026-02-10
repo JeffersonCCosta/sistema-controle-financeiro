@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Controle Financeiro</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="website icon" type="icon" href="../IMG/icon.png">
+</head>
+<body>
+  <main class="container">
+    <h1>Controle Financeiro</h1>
+
+    <p class="subtitle">Selecione um usuário para iniciar</p>
+
+    <div class="users">
+      <button type="button" class="user-card" data-user="Isabella" id="userIsabella" data-user-id="2" data-email="isabellamcecilio@outlook.com" aria-pressed="false">
+        <div class="avatar">
+            <img src="../IMG/perfil_isabella.jpeg" alt="Foto Isabella">
+        </div>
+        <div class="info">
+          <h2>Isabella  </h2>
+        </div>
+      </button>
+
+      <button type="button" class="user-card" data-user="Jefferson" id="userJefferson" data-user-id="1" data-email="jefersoncosta0205@outlook.com" aria-pressed="false">
+        <div class="avatar">
+            <img src="../IMG/perfil_jefferson.jpeg" alt="Foto Jefferson">
+        </div>
+        <div class="info">
+          <h2>Jefferson</h2>
+        </div>
+      </button>
+    </div>
+
+    <div class="actions">
+      <button id="continueBtn" class="btn" disabled>Entrar</button>
+    </div>
+  </main>
+
+  <div id="passwordModal" class="modal hidden">
+    <div class="modal-content">
+      <h2>Digite sua Senha</h2>
+
+      <input type="password" id="passwordInput" placeholder="Senha">
+
+      <div class="modal-actions">
+        <button id="loginBtn" class="btn">Entrar</button>
+        <button id="cancelarBtn" class="btn secondary">Cancelar</button>
+      </div>
+
+      <p id="errorMsg" class="error"></p>
+    </div>
+  </div>
+  
+  <script src="app.js"></script>
+</body>
+</html>
