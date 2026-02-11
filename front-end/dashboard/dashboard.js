@@ -1,3 +1,5 @@
+let grafico = null;
+
 (function() {
     let receitasData = [];
     let despesasData = [];
@@ -27,6 +29,7 @@
             receitasData = receitas;
             despesasData = despesas;
 
+            /*
             const totalReceitas = receitas.reduce((s, r) => s + r.valor, 0);
             const totalDespesas = despesas.reduce((s, d) => s + d.valor, 0);
             const saldo = totalReceitas - totalDespesas;
@@ -38,6 +41,15 @@
 
             montarGrafico(totalReceitas, totalDespesas);
             mostrarTransacoesRecentes(receitas, despesas);
+            */
+
+            carregarMeses();
+            carregarAnos(receitas, despesas);
+            selecionarMesEAnoAtual();
+            atualizarDashboardFiltrado();
+
+            document.getElementById("selecionaMes").addEventListener("change", atualizarDashboardFiltrado);
+            document.getElementById("selecionaAno").addEventListener("change", atualizarDashboardFiltrado);
 
         } catch (erro) {
             console.error("Erro ao carregar dashboard:", erro);
@@ -67,8 +79,12 @@
 
     function montarGrafico(receitas, despesas) {
         const ctx = document.getElementById("graficoFinanceiro");
+
+        if(grafico){
+            grafico.destroy();
+        }
         
-        new Chart(ctx, {
+        grafico = new Chart(ctx, {
             type: 'bar',
             data: {
                 labels: ['Receitas', 'Despesas'],
@@ -311,5 +327,78 @@
         }
     }
 
+    function carregarMeses(){
+        const selectMes = document.getElementById("selecionaMes");
+
+        const meses = [
+            "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+        ];
+
+        meses.forEach((mes, index) => {
+            const option = document.createElement("option");
+            option.value = index + 1;
+            option.textContent = mes;
+
+            selectMes.appendChild(option);
+        })
+    }
+
+    function carregarAnos(receitas, despesas){
+        const selectAno = document.getElementById("selecionaAno");
+        const anos = new Set();
+
+        [...receitas,...despesas].forEach(item => {
+            const data = new Date(item.data || item.createdAt || item.dataTransacao);
+            anos.add(data.getFullYear());
+        });
+
+        [...anos].sort().forEach(ano => {
+            const option = document.createElement("option");
+            option.value = ano;
+            option.textContent = ano;
+
+            selectAno.appendChild(option);
+        })
+    }
+
+    function selecionarMesEAnoAtual(){
+        const hoje = new Date();
+
+        document.getElementById("selecionaMes").value = hoje.getMonth() + 1;
+        document.getElementById("selecionaAno").value = hoje.getFullYear();
+    }
+
+    function filtrarPorMesEAno(lista, mes, ano){
+        return lista.filter(item => {
+            const data = new Date(item.data || item.createdAt || item.dataTransacao);
+            return (
+                data.getMonth() + 1 ===Number(mes) &&
+                data.getFullYear() ===Number(ano)
+            );
+        });
+    }
+
+    function atualizarDashboardFiltrado(){
+        const mes = document.getElementById("selecionaMes").value;
+        const ano = document.getElementById("selecionaAno").value;
+
+        if(!mes || !ano) return;
+
+        const receitasFiltradas = filtrarPorMesEAno(receitasData, mes, ano);
+        const despesasFiltradas = filtrarPorMesEAno(despesasData, mes, ano);
+
+        const totalReceitas = receitasFiltradas.reduce((s, r) => s + r.valor, 0);
+        const totalDespesas = despesasFiltradas.reduce((s, d) => s + d.valor, 0);
+        const saldo = totalReceitas - totalDespesas;
+        
+        atualizarValor("totalReceitas", totalReceitas);
+        atualizarValor("totalDespesas", totalDespesas);
+        atualizarValor("saldo", saldo);
+        
+        montarGrafico(totalReceitas, totalDespesas);
+        mostrarTransacoesRecentes(receitasFiltradas, despesasFiltradas);
+    }
+
     window.initDashboard = carregarDashboard;
+    
 })();

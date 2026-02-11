@@ -1,23 +1,35 @@
 <link rel="stylesheet" href="../dashboard/dashboard.css">
 
+<div class="mesAno">
+    <label for="">Mês</label>
+    <select id="selecionaMes" required>
+        <option value="">Selecione</option>
+    </select>
+
+    <label for="">Ano</label>
+    <select id="selecionaAno" required>
+        <option value="">Selecione</option>
+    </select>
+</div>
+
 <div class="dashboard">
     <div class="cards">
         <div class="card receita">
             <div class="card-icon">↑</div>
             <h3>Receitas</h3>
-            <span id="totalReceitas" class="loading">Carregando...</span>
+            <span id="totalReceitas" class="loading">R$0,0</span>
         </div>
 
         <div class="card despesa">
             <div class="card-icon">↓</div>
             <h3>Despesas</h3>
-            <span id="totalDespesas" class="loading">Carregando...</span>
+            <span id="totalDespesas" class="loading">R$0,0</span>
         </div>
 
         <div class="card saldo">
             <div class="card-icon">💰</div>
             <h3>Saldo</h3>
-            <span id="saldo" class="loading">Carregando...</span>
+            <span id="saldo" class="loading">R$0,0</span>
         </div>
     </div>
 
