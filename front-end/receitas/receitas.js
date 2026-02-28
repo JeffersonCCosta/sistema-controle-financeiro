@@ -26,6 +26,9 @@ async function carregarCategorias() {
 
 // Listar Receitas
 async function carregarReceitas() {
+    const tabelaExiste = document.getElementById("tabela-receitas");
+    if (!tabelaExiste) return;
+
     try {
         const userId = localStorage.getItem("selectedUserId");
         const resp = await fetch(`${window.API.RECEITAS}/usuario/${userId}`);
@@ -39,6 +42,12 @@ async function carregarReceitas() {
 
 function preencherTabelaReceitas(lista) {
     const tabela = document.getElementById("tabela-receitas");
+
+    if (!tabela) {
+    console.warn("tabela-receitas não encontrada (tela de despesas não está carregada).");
+    return;
+    }
+
     tabela.innerHTML = "";
 
     lista.forEach((r, index) => {

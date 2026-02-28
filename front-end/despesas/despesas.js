@@ -22,6 +22,9 @@ async function carregarCategorias() {
 
 // Listar Despesas
 async function carregarDespesas() {
+    const tabelaExiste = document.getElementById("tabela-despesas");
+    if (!tabelaExiste) return;
+
     try {
         const userId = localStorage.getItem("selectedUserId");
         const resp = await fetch (`${window.API.DESPESAS}/usuario/${userId}`);
@@ -35,11 +38,15 @@ async function carregarDespesas() {
 
 function preencherTabelaDespesas(lista) {
     const tabela = document.getElementById("tabela-despesas");
+    if(!tabela){
+        console.warn("tabela-despesas não encontrada (tela de despesas não está carregada).");
+        return;
+    }
+
     tabela.innerHTML = "";
 
     lista.forEach((d, index) => {
         const tr = document.createElement("tr");
-
         tr.innerHTML = `
             <td>${index + 1}</td>
             <td>${d.descricao}</td>
@@ -52,7 +59,6 @@ function preencherTabelaDespesas(lista) {
                 <button class="btn-excluir" onclick="abrirModalExcluirDespesa(${d.id})">Excluir</button>
             </td>
         `;
-
         tabela.appendChild(tr);
     });
 }

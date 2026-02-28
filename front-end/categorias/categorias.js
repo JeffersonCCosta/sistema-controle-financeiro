@@ -12,6 +12,9 @@ function showAlert(message, type = "success") {
 
 //função para buscar do banco
 async function carregarCategorias() {
+    const tabelaExiste = document.getElementById("tabela-categorias");
+    if (!tabelaExiste) return;
+
     try {
         const response = await fetch(window.API.CATEGORIAS);
         const categorias = await response.json();
@@ -24,6 +27,12 @@ async function carregarCategorias() {
 
 function preencherTabela(lista) {
     const tabela = document.getElementById("tabela-categorias");
+
+    if (!tabela) {
+    console.warn("tabela-categorias não encontrada (tela de despesas não está carregada).");
+    return;
+    }
+
     tabela.innerHTML = "";
 
     lista.forEach((cat, index) => {

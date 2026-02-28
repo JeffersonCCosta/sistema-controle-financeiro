@@ -1,4 +1,4 @@
-let grafico = null;
+window.grafico = window.grafico ?? null;
 
 (function() {
     let receitasData = [];
@@ -48,8 +48,8 @@ let grafico = null;
             selecionarMesEAnoAtual();
             atualizarDashboardFiltrado();
 
-            document.getElementById("selecionaMes").addEventListener("change", atualizarDashboardFiltrado);
-            document.getElementById("selecionaAno").addEventListener("change", atualizarDashboardFiltrado);
+            document.getElementById("selecionaMes").onchange = atualizarDashboardFiltrado;
+            document.getElementById("selecionaAno").onchange = atualizarDashboardFiltrado;
 
         } catch (erro) {
             console.error("Erro ao carregar dashboard:", erro);
