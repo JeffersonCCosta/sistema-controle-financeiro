@@ -1,8 +1,12 @@
 console.log("Salvando API'S");
 
-window.API = {
-    CATEGORIAS: "http://localhost:8080/api/categorias",
-    DESPESAS: "http://localhost:8080/api/despesas",
-    RECEITAS: "http://localhost:8080/api/receitas"
+const BASE_URL =
+    window.location.hostname === "localhost"
+        ? "http://localhost:8080"
+        : "https://sistema-controle-financeiro-zrep.onrender.com";
 
+window.API = {
+    CATEGORIAS: `${BASE_URL}/api/categorias`,
+    DESPESAS: `${BASE_URL}/api/despesas`,
+    RECEITAS: `${BASE_URL}/api/receitas`
 };

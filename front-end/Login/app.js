@@ -1,3 +1,4 @@
+const BASE_URL = "https://sistema-controle-financeiro-zrep.onrender.com";
 const userCards = document.querySelectorAll('.user-card');
 const continueBtn = document.getElementById('continueBtn');
 
@@ -61,7 +62,7 @@ document.getElementById('loginBtn').addEventListener('click', async () => {
   const senha = document.getElementById('passwordInput').value;
   const email = localStorage.getItem('selectedUserEmail');
 
-  const response = await fetch('http://localhost:8080/api/auth/login', {
+  const response = await fetch(`${BASE_URL}/api/auth/login`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'

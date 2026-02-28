@@ -57,7 +57,7 @@ document.getElementById("formCadastro")
         };
 
         try {
-            const response = await fetch("http://localhost:8080/api/categorias", {
+            const response = await fetch(window.API.CATEGORIAS, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
