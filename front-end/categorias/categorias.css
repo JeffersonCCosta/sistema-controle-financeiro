@@ -8,9 +8,8 @@
     font-family: Inter, system-ui, -apple-system;
 }
 
-body {
-    background: var(--bg);
-    color: #0f172a;
+.page-receitas{
+  color: #0f172a;
 }
 
 /* Títulos */
@@ -234,4 +233,85 @@ tbody tr:hover {
 .input:focus {
     border-color: #2563eb;
     box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+}
+
+/* ========================= */
+/* RECEITAS - RESPONSIVO     */
+/* ========================= */
+
+/* Escopo para não afetar o resto do sistema */
+.page-receitas{
+  width: 100%;
+}
+
+/* No mobile, reduz espaçamento e melhora toque */
+@media (max-width: 600px){
+  .page-receitas h2{
+    font-size: 18px;
+    margin-bottom: 12px;
+  }
+
+  form{
+    padding: 14px;
+  }
+
+  input, select{
+    font-size: 16px;      /* evita zoom automático no iPhone */
+    min-height: 44px;     /* área de toque */
+  }
+
+  button[type="submit"]{
+    min-height: 44px;
+  }
+}
+
+/* --- TABELA RESPONSIVA --- */
+.table-wrap{
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 12px;
+}
+
+/* Botões de ação: empilha no mobile */
+td:last-child{
+  white-space: nowrap;
+}
+
+@media (max-width: 600px){
+  .btn-editar, .btn-excluir{
+    padding: 10px 12px;
+    font-size: 14px;
+    min-height: 40px;
+  }
+
+  /* empilha os botões dentro da célula */
+  td:last-child{
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+}
+
+/* --- MODAL RESPONSIVO --- */
+.modal{
+  padding: 16px; /* espaço nas bordas no celular */
+}
+
+.modal-content{
+  width: 520px;
+  max-width: 100%;
+  max-height: 85dvh;      /* não estoura a tela */
+  overflow: auto;         /* scroll dentro do modal */
+}
+
+/* evita zoom no iPhone dentro do modal */
+.modal-content input,
+.modal-content select{
+  font-size: 16px;
+  min-height: 44px;
+}
+
+.table-wrap table{
+  min-width: 680px; /* fica um pouco mais leve */
 }

@@ -36,13 +36,38 @@ const sectionTitle = document.getElementById("sectionTitle");
 const contentArea = document.getElementById("contentArea");
 const sidebar = document.querySelector(".sidebar");
 const toggleMenu = document.getElementById("toggleMenu");
+const overlay = document.getElementById("overlay");
+
+function openMenu(){
+  sidebar.classList.add("open");
+  overlay?.classList.add("show");
+}
+
+function closeMenu(){
+  sidebar.classList.remove("open");
+  overlay?.classList.remove("show");
+}
+
+function isMobile(){
+  return window.matchMedia("(max-width: 900px)").matches;
+}
 
 toggleMenu.addEventListener("click", () => {
-    sidebar.classList.toggle("open");
+  if (sidebar.classList.contains("open")) closeMenu();
+  else openMenu();
+});
+
+overlay?.addEventListener("click", closeMenu);
+
+/* Fecha menu ao redimensionar para desktop */
+window.addEventListener("resize", () => {
+  if (!isMobile()) closeMenu();
 });
 
 menuButtons.forEach(btn => {
     btn.addEventListener("click", async () => {
+
+        if (isMobile()) closeMenu();
 
         menuButtons.forEach(b => b.classList.remove("active"));
         btn.classList.add("active");

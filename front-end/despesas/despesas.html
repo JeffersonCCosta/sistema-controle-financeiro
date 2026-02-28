@@ -1,79 +1,82 @@
 <link rel="stylesheet" href="../despesas/despesas.css">
 
-<h2>Cadastro de Despesa</h2>
+<div class="page-receitas">
 
-<form id="formDespesa">
-    <label >Descrição</label>
-    <input type="text" id="descricao" required placeholder="Ex: Supermecado">
+    <h2>Cadastro de Despesa</h2>
 
-    <label for="">Valor</label>
-    <input type="number" id="valor" step="0.01" required placeholder="0,00">
+    <form id="formDespesa">
+        <label >Descrição</label>
+        <input type="text" id="descricao" required placeholder="Ex: Supermecado">
 
-    <label for="">Data</label>
-    <input type="date" id="data" required>
+        <label for="">Valor</label>
+        <input type="number" id="valor" step="0.01" required placeholder="0,00">
 
-    <label for="">Categoria</label>
-    <select id="categoria" required>
-        <option value="">Selecione</option>
-    </select>
+        <label for="">Data</label>
+        <input type="date" id="data" required>
 
-    <label for="">Observação</label>
-    <input type="text" id="observacao" placeholder="Opcional">
+        <label for="">Categoria</label>
+        <select id="categoria" required>
+            <option value="">Selecione</option>
+        </select>
 
-    <button type="submit">Salvar</button>
-</form>
+        <label for="">Observação</label>
+        <input type="text" id="observacao" placeholder="Opcional">
 
-<hr>
+        <button type="submit">Salvar</button>
+    </form>
 
-<table>
-    <thead>
-        <tr>
-            <th>#</th>
-            <th>Descrição</th>
-            <th>Valor</th>
-            <th>Data</th>
-            <th>Categoria</th>
-            <th>Observação</th>
-            <th>Ações</th>
-        </tr>
-    </thead>
-    <tbody id="tabela-despesas"></tbody>
-</table>
-
-<div class="modal" id="modalEditarDespesa">
-    <div class="modal-content">
-        <h3>Editar Despesa</h3>
-
-        <input type="hidden" id="editarId">
-
-        <label for="">Descrição</label>
-        <input type="text" id="editarDescricao">
-
-        <label>Valor</label>
-        <input type="number" id="editarValor" step="0.01">
-
-        <label>Data</label>
-        <input type="date" id="editarData">
-
-        <label>Categoria</label>
-        <select id="editarCategoria"></select>
-
-        <label>Observação</label>
-        <input type="text" id="editarObservacao">
-
-        <button onclick="salvarEdicaoDespesa()">Salvar</button>
-        <button onclick="fecharModalEditarDespesa()">Cancelar</button>
+    <hr>
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Descrição</th>
+                    <th>Valor</th>
+                    <th>Data</th>
+                    <th>Categoria</th>
+                    <th>Observação</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody id="tabela-despesas"></tbody>
+        </table>
     </div>
-</div>
 
-<div id="modalExcluirDespesa" class="modal">
-    <div class="modal-content">
-        <h3>Excluir Despesa</h3>
-        <p>Tem certeza que deseja excluir?</p>
+    <div class="modal" id="modalEditarDespesa">
+        <div class="modal-content">
+            <h3>Editar Despesa</h3>
 
-        <button onclick="confirmarExclusaoDespesa()">Sim</button>
-        <button onclick="fecharModalExcluirDespesa()">Não</button>
+            <input type="hidden" id="editarId">
+
+            <label for="">Descrição</label>
+            <input type="text" id="editarDescricao">
+
+            <label>Valor</label>
+            <input type="number" id="editarValor" step="0.01">
+
+            <label>Data</label>
+            <input type="date" id="editarData">
+
+            <label>Categoria</label>
+            <select id="editarCategoria"></select>
+
+            <label>Observação</label>
+            <input type="text" id="editarObservacao">
+
+            <button onclick="salvarEdicaoDespesa()">Salvar</button>
+            <button onclick="fecharModalEditarDespesa()">Cancelar</button>
+        </div>
     </div>
-</div>
 
-<script src="../Login/utils.js"></script>
+    <div id="modalExcluirDespesa" class="modal">
+        <div class="modal-content">
+            <h3>Excluir Despesa</h3>
+            <p>Tem certeza que deseja excluir?</p>
+
+            <button onclick="confirmarExclusaoDespesa()">Sim</button>
+            <button onclick="fecharModalExcluirDespesa()">Não</button>
+        </div>
+    </div>
+
+</div>
