@@ -48,8 +48,8 @@ window.grafico = window.grafico ?? null;
             selecionarMesEAnoAtual();
             atualizarDashboardFiltrado();
 
-            document.getElementById("selecionaMes").onchange = atualizarDashboardFiltrado;
-            document.getElementById("selecionaAno").onchange = atualizarDashboardFiltrado;
+            //document.getElementById("selecionaMes").onchange = atualizarDashboardFiltrado;
+            //document.getElementById("selecionaAno").onchange = atualizarDashboardFiltrado;
 
         } catch (erro) {
             console.error("Erro ao carregar dashboard:", erro);
@@ -246,6 +246,7 @@ window.grafico = window.grafico ?? null;
             'farmácia': '💊',
             'medico': '🩺',
             'médico': '🩺',
+            'Convênio médico': '🏥',
             'hospital': '🏥',
             
             // Lazer e Entretenimento
@@ -327,6 +328,7 @@ window.grafico = window.grafico ?? null;
         }
     }
 
+    /*
     function carregarMeses(){
         const selectMes = document.getElementById("selecionaMes");
 
@@ -342,7 +344,32 @@ window.grafico = window.grafico ?? null;
             selectMes.appendChild(option);
         })
     }
+        */
 
+    //Nova função
+
+    function carregarMeses(){
+        const wrapper = document.querySelector(".meses-wrapper");
+
+        const meses = [
+            "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+        ];
+
+        meses.forEach((mes, index) => {
+            const btn = document.createElement("button");
+            btn.className = "mes-btn";
+            btn.dataset.mes = index + 1;
+            btn.textContent = mes;
+            btn.addEventListener("click", () => {
+            document.querySelectorAll(".mes-btn").forEach(b => b.classList.remove("ativo"));
+            btn.classList.add("ativo");
+            atualizarDashboardFiltrado();
+        });
+        wrapper.appendChild(btn);
+    });
+    }
+
+    /*
     function carregarAnos(receitas, despesas){
         const selectAno = document.getElementById("selecionaAno");
         const anos = new Set();
@@ -360,27 +387,71 @@ window.grafico = window.grafico ?? null;
             selectAno.appendChild(option);
         })
     }
+        */
+    
+    function carregarAnos(receitas, despesas) {
+        const wrapper = document.querySelector(".anos-wrapper");
+        const anos = new Set();
 
-    function selecionarMesEAnoAtual(){
+        [...receitas, ...despesas].forEach(item => {
+            const data = new Date(item.data || item.createdAt || item.dataTransacao);
+            anos.add(data.getFullYear());
+        });
+
+        [...anos].sort().forEach(ano => {
+            const btn = document.createElement("button");
+            btn.className = "ano-btn";
+            btn.dataset.ano = ano;
+            btn.textContent = ano;
+            btn.addEventListener("click", () => {
+                document.querySelectorAll(".ano-btn").forEach(b => b.classList.remove("ativo"));
+                btn.classList.add("ativo");
+                atualizarDashboardFiltrado();
+        });
+        wrapper.appendChild(btn);
+    });
+    }
+
+    function selecionarMesEAnoAtual() {
         const hoje = new Date();
+        const mes = hoje.getMonth() + 1;
+        const ano = hoje.getFullYear();
 
-        document.getElementById("selecionaMes").value = hoje.getMonth() + 1;
-        document.getElementById("selecionaAno").value = hoje.getFullYear();
+        document.querySelectorAll(".mes-btn").forEach(b => {
+            b.classList.toggle("ativo", Number(b.dataset.mes) === mes);
+        });
+
+        document.querySelectorAll(".ano-btn").forEach(b => {
+            b.classList.toggle("ativo", Number(b.dataset.ano) === ano);
+        });
     }
 
     function filtrarPorMesEAno(lista, mes, ano){
         return lista.filter(item => {
-            const data = new Date(item.data || item.createdAt || item.dataTransacao);
-            return (
-                data.getMonth() + 1 ===Number(mes) &&
-                data.getFullYear() ===Number(ano)
-            );
+            const dataString = item.data || item.createdAt || item.dataTransacao;
+            let mesData, anoData;
+
+            if (typeof dataString === 'string' && dataString.includes('T')) {
+                const partes = dataString.split('T')[0].split('-');
+                anoData = parseInt(partes[0]);
+                mesData = parseInt(partes[1]);
+            } else {
+                const data = new Date(dataString);
+                data.setMinutes(data.getMinutes() + data.getTimezoneOffset());
+                mesData = data.getMonth() + 1;
+                anoData = data.getFullYear();
+            }
+
+            return mesData === Number(mes) && anoData === Number(ano);
         });
     }
 
     function atualizarDashboardFiltrado(){
-        const mes = document.getElementById("selecionaMes").value;
-        const ano = document.getElementById("selecionaAno").value;
+        const mesSelecionado = document.querySelector(".mes-btn.ativo");
+        const anoSelecionado = document.querySelector(".ano-btn.ativo");
+
+        const mes = mesSelecionado?.dataset.mes;
+        const ano = anoSelecionado?.dataset.ano;
 
         if(!mes || !ano) return;
 
