@@ -4,7 +4,6 @@
   --accent:#2b6ef6;
   --muted:#6b7280;
   --shadow:0 6px 18px rgba(15,23,42,0.06);
-  font-family: Inter, system-ui, -apple-system;
 }
 
 *{ box-sizing:border-box; margin:0; padding:0 }
@@ -14,7 +13,8 @@ body{
   color:#0f172a;
   display:flex;
   min-height:100dvh;
-  overflow:hidden;
+  overflow:auto;
+  font-family: Inter, system-ui, -apple-system;
 }
 
 /* ----------------------------- */

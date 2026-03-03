@@ -27,20 +27,29 @@
 <div class="dashboard">
     <div class="cards">
         <div class="card receita">
-            <div class="card-icon">↑</div>
+            <div class="card-header">
+                <div class="card-icon"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiMwNTk2NjkiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0ibHVjaWRlIGx1Y2lkZS10cmVuZGluZy11cC1pY29uIGx1Y2lkZS10cmVuZGluZy11cCI+PHBhdGggZD0iTTE2IDdoNnY2Ii8+PHBhdGggZD0ibTIyIDctOC41IDguNS01LTVMMiAxNyIvPjwvc3ZnPg==" alt="Grafico subindo"></div>
+                <span class="card-badge" id="badgeReceitas">--</span>
+            </div>
             <h3>Receitas</h3>
             <span id="totalReceitas" class="loading">R$0,0</span>
         </div>
 
         <div class="card despesa">
-            <div class="card-icon">↓</div>
+            <div class="card-header">
+                <div class="card-icon"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNkYzI2MjYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0ibHVjaWRlIGx1Y2lkZS10cmVuZGluZy1kb3duLWljb24gbHVjaWRlLXRyZW5kaW5nLWRvd24iPjxwYXRoIGQ9Ik0xNiAxN2g2di02Ii8+PHBhdGggZD0ibTIyIDE3LTguNS04LjUtNSA1TDIgNyIvPjwvc3ZnPg==" alt="Grafico caindo"></div>
+                <span class="card-badge" id="badgeDespesas">--</span>
+            </div>
             <h3>Despesas</h3>
             <span id="totalDespesas" class="loading">R$0,0</span>
         </div>
 
         <div class="card saldo">
-            <div class="card-icon">💰</div>
-            <h3>Saldo</h3>
+            <div class="card-header">
+                <div class="card-icon"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNkOTc3MDYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0ibHVjaWRlIGx1Y2lkZS1kb2xsYXItc2lnbi1pY29uIGx1Y2lkZS1kb2xsYXItc2lnbiI+PGxpbmUgeDE9IjEyIiB4Mj0iMTIiIHkxPSIyIiB5Mj0iMjIiLz48cGF0aCBkPSJNMTcgNUg5LjVhMy41IDMuNSAwIDAgMCAwIDdoNWEzLjUgMy41IDAgMCAxIDAgN0g2Ii8+PC9zdmc+" alt="Sifrão"></div>
+                <span class="card-badge" id="badgeSaldo">--</span>
+            </div>
+            <h3>Saldo Total</h3>
             <span id="saldo" class="loading">R$0,0</span>
         </div>
     </div>
@@ -59,5 +68,3 @@
         </div>
     </div>
 </div>
-
-<script src="../Login/utils.js"></script>

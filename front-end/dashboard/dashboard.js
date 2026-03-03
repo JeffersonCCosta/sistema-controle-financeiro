@@ -80,11 +80,11 @@ window.grafico = window.grafico ?? null;
     function montarGrafico(receitas, despesas) {
         const ctx = document.getElementById("graficoFinanceiro");
 
-        if(grafico){
-            grafico.destroy();
+        if(window.grafico){
+            window.grafico.destroy();
         }
         
-        grafico = new Chart(ctx, {
+        window.grafico = new Chart(ctx, {
             type: 'bar',
             data: {
                 labels: ['Receitas', 'Despesas'],
@@ -193,7 +193,8 @@ window.grafico = window.grafico ?? null;
                 ? transacao.categoria.nome 
                 : transacao.categoria;
             
-            const icone = transacao.tipo === 'receita' ? '💰' : getCategoriaIcon(categoriaNome);
+            //const icone = transacao.tipo === 'receita' ? '💰' : getCategoriaIcon(categoriaNome);
+            const icone = getCategoriaIcon(categoriaNome || (transacao.tipo === 'receita' ? 'receita' : ''));
             const sinal = transacao.tipo === 'receita' ? '+' : '-';
             const classe = transacao.tipo === 'receita' ? 'amount-positive' : 'amount-negative';
             
@@ -246,7 +247,7 @@ window.grafico = window.grafico ?? null;
             'farmácia': '💊',
             'medico': '🩺',
             'médico': '🩺',
-            'Convênio médico': '🏥',
+            'convênio médico': '🏥',
             'hospital': '🏥',
             
             // Lazer e Entretenimento
@@ -279,6 +280,7 @@ window.grafico = window.grafico ?? null;
             'telefone': '📱',
             'celular': '📱',
             'tv': '📺',
+            'cartao': '💳',
             
             // Vestuário
             'roupa': '👕',
@@ -289,14 +291,20 @@ window.grafico = window.grafico ?? null;
             
             // Outros
             'outros': '📌',
-            'diverso': '📌'
+            'diverso': '📌',
+            'salario': '💵'
         };
         
         if (!categoria || typeof categoria !== 'string') {
             return '💳';
         }
         
-        const categoriaLower = categoria.toLowerCase().trim();
+        //const categoriaLower = categoria.toLowerCase().trim();
+        const categoriaLower = categoria
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .trim();
         
         // Busca exata primeiro
         if (icones[categoriaLower]) {
@@ -450,24 +458,56 @@ window.grafico = window.grafico ?? null;
         const mesSelecionado = document.querySelector(".mes-btn.ativo");
         const anoSelecionado = document.querySelector(".ano-btn.ativo");
 
-        const mes = mesSelecionado?.dataset.mes;
-        const ano = anoSelecionado?.dataset.ano;
+        const mes = Number (mesSelecionado?.dataset.mes);
+        const ano = Number (anoSelecionado?.dataset.ano);
 
         if(!mes || !ano) return;
 
+        const mesAnterior = mes === 1 ? 12 : mes - 1;
+        const anoAnterior = mes === 1 ? ano - 1 : ano;
+
         const receitasFiltradas = filtrarPorMesEAno(receitasData, mes, ano);
         const despesasFiltradas = filtrarPorMesEAno(despesasData, mes, ano);
+        const receitasAnteriores = filtrarPorMesEAno(receitasData, mesAnterior, anoAnterior);
+        const despesasAnteriores = filtrarPorMesEAno(despesasData, mesAnterior, anoAnterior)
 
         const totalReceitas = receitasFiltradas.reduce((s, r) => s + r.valor, 0);
         const totalDespesas = despesasFiltradas.reduce((s, d) => s + d.valor, 0);
         const saldo = totalReceitas - totalDespesas;
+
+        const totalReceitasAnt = receitasAnteriores.reduce((s, r) => s + r.valor, 0);
+        const totalDespesasAnt = despesasAnteriores.reduce((s, d) => s + d.valor, 0);
+        const saldoAnt = totalReceitasAnt - totalDespesasAnt;
         
         atualizarValor("totalReceitas", totalReceitas);
         atualizarValor("totalDespesas", totalDespesas);
         atualizarValor("saldo", saldo);
+
+        atualizarBadge("badgeReceitas", calcularVariacao(totalReceitas, totalReceitasAnt));
+        atualizarBadge("badgeDespesas", calcularVariacao(totalDespesas, totalDespesasAnt), true);
+        atualizarBadge("badgeSaldo",    calcularVariacao(saldo, saldoAnt));
         
         montarGrafico(totalReceitas, totalDespesas);
         mostrarTransacoesRecentes(receitasFiltradas, despesasFiltradas);
+    }
+
+    function calcularVariacao(atual, anterior) {
+        if(anterior === 0) return null;
+        return ((atual - anterior) / anterior) * 100;
+    }
+
+    function atualizarBadge(elementId, variacao, inverter = false) {
+        const badge = document.getElementById(elementId);
+        if(!badge || variacao === null){
+            badge.textContent = '---';
+            badge.classList.remove('badge-positivo', 'badge-negativo');
+            return;
+        }
+
+        const positivo = inverter ? variacao < 0 : variacao > 0;
+        const sinal = variacao > 0 ? '+' : '';
+        badge.textContent = `${sinal}${variacao.toFixed(1)}%`;
+        badge.className = 'card-badge ' + (positivo ? 'badge-positivo' : 'badge-negativo');
     }
 
     window.initDashboard = carregarDashboard;
