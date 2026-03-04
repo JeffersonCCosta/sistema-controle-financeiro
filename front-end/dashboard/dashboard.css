@@ -65,6 +65,10 @@
     color: #1f2937;
 }
 
+.card span#totalDespesas{
+    color: var(--vermelho);
+}
+
 .card span.loading {
     font-size: 14px;
     color: var(--muted);
@@ -91,12 +95,12 @@
 }
 
 .card.saldo {
-    border-left: 4px solid var(--amarelo);
+    border-left: 4px solid var(--accent);
 }
 
 .card.saldo .card-icon {
-    color: var(--amarelo);
-    background: #fef3c7;
+    color: var(--accent);
+    background: #c7e6fe;
 }
 
 .card.saldo span {

@@ -483,7 +483,7 @@ window.grafico = window.grafico ?? null;
         atualizarValor("totalDespesas", totalDespesas);
         atualizarValor("saldo", saldo);
 
-        atualizarBadge("badgeReceitas", calcularVariacao(totalReceitas, totalReceitasAnt));
+        atualizarBadge("badgeReceitas", calcularVariacao(totalReceitas, totalReceitasAnt), true);
         atualizarBadge("badgeDespesas", calcularVariacao(totalDespesas, totalDespesasAnt), true);
         atualizarBadge("badgeSaldo",    calcularVariacao(saldo, saldoAnt));
         

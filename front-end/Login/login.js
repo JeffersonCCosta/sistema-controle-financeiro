@@ -1,7 +1,16 @@
 console.log("LOGIN JS CARREGADO");
 
 const BASE_URL = "https://sistema-controle-financeiro-zrep.onrender.com";
+const statusMsg = document.getElementById("statusMsg");
+
 document.addEventListener("DOMContentLoaded", () => {
+  // Se já estiver logado, manda direto pro sistema
+  const jaLogado = localStorage.getItem("usuarioLogado");
+  if (jaLogado) {
+    window.location.href = "../Principal/Principal.html";
+    return;
+  }
+
   const loginForm = document.getElementById("loginForm");
   const emailInput = document.getElementById("emailInput");
   const passwordInput = document.getElementById("passwordInput");
@@ -11,14 +20,72 @@ document.addEventListener("DOMContentLoaded", () => {
   const togglePasswordBtn = document.getElementById("togglePasswordBtn");
   const forgotPasswordLink = document.getElementById("forgotPasswordLink");
   const registerLink = document.getElementById("registerLink");
+
   if (!loginForm || !emailInput || !passwordInput || !loginBtn || !errorMsg) {
-    console.warn(
-      "Elementos do login não encontrados nesta página. login.js não será executado aqui.",
-    );
+    console.warn("Elementos do login não encontrados. login.js não será executado.");
     return;
   }
 
-  /**Olho da senha + troca do ícone */
+  function isValidEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
+
+  function setError(message) {
+    errorMsg.textContent = message || "";
+    if (message) {
+      errorMsg.classList.remove("shake");
+      // reinicia animação
+      void errorMsg.offsetWidth;
+      errorMsg.classList.add("shake");
+    }
+  }
+
+  function setLoading(isLoading) {
+    loginBtn.disabled = isLoading;
+
+    const textEl = loginBtn.querySelector(".btn-text");
+    if (isLoading) {
+      loginBtn.classList.add("is-loading");
+      if (textEl) textEl.textContent = "Logando";
+    } else {
+      loginBtn.classList.remove("is-loading");
+      if (textEl) textEl.textContent = "Entrar";
+    }
+  }
+
+  function markEmailState() {
+    const email = (emailInput.value || "").trim().toLowerCase();
+
+    // não marca nada se estiver vazio (evita UX chata)
+    if (!email) {
+      emailInput.classList.remove("is-valid", "is-invalid");
+      setError("");
+      return;
+    }
+
+    if (isValidEmail(email)) {
+      emailInput.classList.add("is-valid");
+      emailInput.classList.remove("is-invalid");
+      setError("");
+    } else {
+      emailInput.classList.add("is-invalid");
+      emailInput.classList.remove("is-valid");
+      // não força erro enquanto digita, só mostra se perder foco (ver blur)
+    }
+  }
+
+  // valida enquanto digita (somente visual)
+  emailInput.addEventListener("input", markEmailState);
+
+  // ao sair do campo, se inválido, mostra mensagem
+  emailInput.addEventListener("blur", () => {
+    const email = (emailInput.value || "").trim().toLowerCase();
+    if (email && !isValidEmail(email)) {
+      setError("E-mail inválido.");
+    }
+  });
+
+  /** Olho da senha + troca do ícone */
   if (togglePasswordBtn) {
     const iconEye = document.getElementById("iconEye");
 
@@ -28,25 +95,21 @@ document.addEventListener("DOMContentLoaded", () => {
     const eyeClosed =
       "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiMwMDAwMDAiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0ibHVjaWRlIGx1Y2lkZS1leWUtb2ZmLWljb24gbHVjaWRlLWV5ZS1vZmYiPjxwYXRoIGQ9Ik0xMC43MzMgNS4wNzZhMTAuNzQ0IDEwLjc0NCAwIDAgMSAxMS4yMDUgNi41NzUgMSAxIDAgMCAxIDAgLjY5NiAxMC43NDcgMTAuNzQ3IDAgMCAxLTEuNDQ0IDIuNDkiLz48cGF0aCBkPSJNMTQuMDg0IDE0LjE1OGEzIDMgMCAwIDEtNC4yNDItNC4yNDIiLz48cGF0aCBkPSJNMTcuNDc5IDE3LjQ5OWExMC43NSAxMC43NSAwIDAgMS0xNS40MTctNS4xNTEgMSAxIDAgMCAxIDAtLjY5NiAxMC43NSAxMC43NSAwIDAgMSA0LjQ0Ni01LjE0MyIvPjxwYXRoIGQ9Im0yIDIgMjAgMjAiLz48L3N2Zz4=";
 
-    //Estado inicial: senha escondida + ícone de "não ver" (olho cortado)
     passwordInput.type = "password";
     if (iconEye) iconEye.src = eyeClosed;
-    togglePasswordBtn.setAttribute("aria-pressed", "false");
-    togglePasswordBtn.setAttribute("aria-label", "Mostrar senha");
-    togglePasswordBtn.title = "Mostrar senha";
 
     togglePasswordBtn.addEventListener("click", () => {
       const isHidden = passwordInput.type === "password";
 
       if (isHidden) {
         passwordInput.type = "text";
-        if (iconEye) iconEye.src = eyeOpen; // agora está vendo
+        if (iconEye) iconEye.src = eyeOpen;
         togglePasswordBtn.setAttribute("aria-pressed", "true");
         togglePasswordBtn.setAttribute("aria-label", "Ocultar senha");
         togglePasswordBtn.title = "Ocultar senha";
       } else {
         passwordInput.type = "password";
-        if (iconEye) iconEye.src = eyeClosed; // agora não está vendo
+        if (iconEye) iconEye.src = eyeClosed;
         togglePasswordBtn.setAttribute("aria-pressed", "false");
         togglePasswordBtn.setAttribute("aria-label", "Mostrar senha");
         togglePasswordBtn.title = "Mostrar senha";
@@ -56,55 +119,32 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  if (!loginForm || !emailInput || !passwordInput || !loginBtn || !errorMsg) {
-    console.warn(
-      "Elementos do login não encontrados nesta página. app.js não será executado aqui.",
-    );
-    return;
-  }
-
-  function setError(message) {
-    errorMsg.textContent = message || "";
-  }
-
-  function setLoading(isLoading) {
-    loginBtn.disabled = isLoading;
-
-    if (isLoading) {
-      loginBtn.dataset.originalText = loginBtn.textContent;
-      loginBtn.textContent = "Logando...";
-    } else {
-      loginBtn.textContent = loginBtn.dataset.originalText || "Entrar";
-    }
-  }
-
-  function isValidEmail(email) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  }
-
   /** Links (placeholder) */
-  if (forgotPasswordLink) {
-    forgotPasswordLink.addEventListener("click", (e) => {
-      e.preventDefault();
-      alert("Em breve: recuperação de senha.");
-    });
+  forgotPasswordLink?.addEventListener("click", (e) => {
+    e.preventDefault();
+    alert("Em breve: recuperação de senha.");
+  });
+
+  registerLink?.addEventListener("click", (e) => {
+    e.preventDefault();
+    alert("Em breve: tela de cadastro.");
+  });
+
+  function setStatus(message) {
+    if (!statusMsg) return;
+    statusMsg.innerHTML = message || "";
   }
 
-  if (registerLink) {
-    registerLink.addEventListener("click", (e) => {
-      e.preventDefault();
-      alert("Em breve: tela de cadastro.");
-    });
-  }
-
-  /** Login (Enter e clique) */
+  /** Login */
   loginForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     setError("");
+    setStatus("");
 
     const email = (emailInput.value || "").trim().toLowerCase();
     const senha = passwordInput.value || "";
 
+    // validações
     if (!email) {
       setError("Informe seu e-mail.");
       emailInput.focus();
@@ -123,6 +163,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
     setLoading(true);
 
+    const t1 = setTimeout(() => {
+      setStatus("Conectando com o servidor...");
+    }, 3000);
+
+    const t2 = setTimeout(() => {
+      setStatus("Servidor iniciando (primeiro acesso do dia). Aguarde mais alguns segundos...");
+    }, 6000);
+
+    const t3 = setTimeout(() => {
+      setStatus("Ainda conectando... isso pode demorar um pouco na primeira tentativa.");
+    }, 12000);
+
     try {
       const response = await fetch(`${BASE_URL}/api/auth/login`, {
         method: "POST",
@@ -131,7 +183,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       if (!response.ok) {
-        setError("Senha inválida");
+        setError("E-mail ou senha inválidos.");
         return;
       }
 
@@ -140,18 +192,18 @@ document.addEventListener("DOMContentLoaded", () => {
       localStorage.setItem("usuarioLogado", JSON.stringify(usuario));
       localStorage.setItem("selectedUserEmail", email);
 
-      if (usuario?.id != null) {
-        localStorage.setItem("selectedUserId", String(usuario.id));
-      }
-      if (usuario?.nome) {
-        localStorage.setItem("selectedUser", usuario.nome);
-      }
+      if (usuario?.id != null) localStorage.setItem("selectedUserId", String(usuario.id));
+      if (usuario?.nome) localStorage.setItem("selectedUser", usuario.nome);
 
       window.location.href = "../Principal/Principal.html";
     } catch (err) {
       console.error(err);
       setError("Erro ao conectar com o servidor. Tente novamente.");
     } finally {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+      setStatus("");
       setLoading(false);
     }
   });

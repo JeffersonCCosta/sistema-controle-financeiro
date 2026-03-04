@@ -109,7 +109,7 @@ input:focus {
   border: none;
   border-radius: 14px;
 
-  background: linear-gradient(135deg, var(--accent), var(--accent3));
+  background: var(--accent);
   color: white;
 
   font-size: 16px;
@@ -158,4 +158,68 @@ input:focus {
 
 .dot {
   color: rgba(15,23,42,0.35);
+}
+
+/* Spinner do botão */
+.spinner{
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255,255,255,0.9);
+  border-top-color: transparent;
+  border-radius: 50%;
+  display: none;
+  animation: spin .7s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.btn.is-loading .spinner{
+  display: inline-block;
+}
+
+.btn.is-loading{
+  cursor: progress;
+}
+
+/* Erro com animação leve */
+.error.shake{
+  animation: shake .22s ease;
+}
+
+@keyframes shake{
+  0%{ transform: translateX(0); }
+  25%{ transform: translateX(-4px); }
+  50%{ transform: translateX(4px); }
+  75%{ transform: translateX(-3px); }
+  100%{ transform: translateX(0); }
+}
+
+/* Validação visual */
+input.is-invalid{
+  border-color: rgba(220,38,38,0.65);
+  box-shadow: 0 0 0 4px rgba(220,38,38,0.10);
+}
+
+input.is-valid{
+  border-color: rgba(16,185,129,0.65);
+  box-shadow: 0 0 0 4px rgba(16,185,129,0.10);
+}
+
+.status{
+  min-height: 18px;            /* evita “pular” layout */
+  margin-top: 10px;
+  font-size: 13px;
+  color: white;
+  text-align: center;
+}
+
+.status strong{
+  color: #0f172a;
 }
