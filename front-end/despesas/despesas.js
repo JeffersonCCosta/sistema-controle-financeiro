@@ -8,7 +8,7 @@ async function carregarCategorias() {
         const resp = await fetch (window.API.CATEGORIAS);
         const categorias = await resp.json();
 
-        categorias.filter(c => c.tipo ==="Saida").forEach(cat => {
+        categorias.filter(c => c.tipo ==="Saída").forEach(cat => {
             const option = document.createElement("option");
             option.value = cat.id;
             option.textContent = cat.nome;
