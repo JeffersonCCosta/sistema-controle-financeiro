@@ -1,5 +1,6 @@
 package com.controlefinanceiro.controle_financeiro.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -16,6 +17,8 @@ public class Usuario {
     private String nome;
 
     private String email;
+
+    @JsonIgnore
     private String senha;
     private String tipo_usuario;
 

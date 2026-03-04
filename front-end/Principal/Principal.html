@@ -13,8 +13,9 @@
   <button id="collapseBtn" class="collapse-btn" aria-expanded="true" title="Recolher menu">⮜</button>
 
   <div class="avatar">
-    <a href="Principal.html">
-        <img id="userAvatar" alt="Foto do Usuário"></a>
+    <a href="Principal.html" aria-label="Ir para início">
+        <div id="userAvatar" class="user-avatar" aria-label="Avatar do usuário"></div>
+    </a>
   </div>
 
   <nav class="menu" aria-label="Navegação principal">
@@ -45,8 +46,20 @@
         </section>
     </div>
 
+    <div id="logoutModal" class="modal">
+        <div class="modal-content">
+            <h3>Deseja realmente sair do sistema?</h3>
+
+            <div class="modal-actions">
+                <button id="confirmLogout">Sair</button>
+                <button id="cancelLogout">Cancelar</button>
+            </div>
+        </div>
+    </div>
+    
+
     <script src="api.js"></script>
-    <script src="../Login/utils.js"></script>
+    <script src="utils.js"></script>
     <script src="script.js"></script>
 
 </body>

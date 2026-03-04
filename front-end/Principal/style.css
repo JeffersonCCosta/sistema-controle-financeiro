@@ -73,22 +73,26 @@ body{
 
 /* Avatar */
 .avatar {
-    width: 90px;
-    height: 90px;
-    border-radius: 50%;
-    overflow: hidden;
-    align-items: center;
-    justify-content: center;
-    background: #ffffff44;
-    border: 2px solid #ffffff88;
-    margin: 0 auto;
-    transition: width .25s ease, height .25s ease;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  margin: 0 auto;
+
+  display: grid;
+  place-items: center;
+
+  overflow: visible;          /* <- importante */
+  background: transparent;    /* <- remove o “vidro” em cima */
+  border: none;               /* opcional */
 }
 
-.avatar img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+.avatar a {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  text-decoration: none;
 }
 
 .sidebar.collapsed .avatar {
@@ -270,4 +274,92 @@ body{
   .menu-item[data-tooltip]:hover::after{
     display:none !important;
   }
+}
+
+.modal-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+/* ----------------------------- */
+/* MODAL (padrão do sistema) */
+/* ----------------------------- */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(15,23,42,0.45);
+  backdrop-filter: blur(3px);
+  justify-content: center;
+  align-items: center;
+  z-index: 2000; /* garante ficar acima da sidebar/topbar */
+}
+
+.modal.show {
+  display: flex;
+}
+
+.modal-content {
+  background: white;
+  padding: 25px;
+  width: 420px;
+  max-width: 90%;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.25);
+  animation: popIn 0.25s ease;
+}
+
+.modal-content h3 {
+  margin-bottom: 14px;
+}
+
+/* Botões modal */
+.modal-content button {
+  padding: 10px 14px;
+  border-radius: 6px;
+  border: 0;
+  cursor: pointer;
+  font-size: 15px;
+  margin-top: 10px;
+}
+
+/* Mantendo seu padrão odd/even */
+.modal-content button:nth-child(odd) {
+  background: var(--accent);
+  color: white;
+}
+
+.modal-content button:nth-child(even) {
+  background: #e7e7e7;
+}
+
+/* animação */
+@keyframes popIn {
+  from { transform: translateY(8px) scale(0.98); opacity: 0; }
+  to   { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+.user-avatar {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+
+  font-weight: 800;
+  font-size: 28px;
+  color: #fff;
+
+  background: var(--accent);
+  border: 2px solid rgba(255,255,255,0.6);
+  box-shadow: var(--shadow);
+  user-select: none;
+}
+.sidebar.collapsed .user-avatar {
+  width: 56px;
+  height: 56px;
+  font-size: 18px;
 }

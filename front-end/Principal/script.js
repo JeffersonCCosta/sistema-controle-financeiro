@@ -1,27 +1,40 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const usuario = localStorage.getItem("selectedUser");
+const usuario = localStorage.getItem("usuarioLogado");
+const logoutBtn = document.getElementById("logout");
+const logoutModal = document.getElementById("logoutModal");
+const confirmLogout = document.getElementById("confirmLogout");
+const cancelLogout = document.getElementById("cancelLogout");
 
-    // proteção básica
-    if (!usuario) {
-        window.location.href = "../Login/login.html";
-        return;
-    }
+if (!usuario) {
+  window.location.href = "../Login/Login.html";
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+        if (!usuario) {
+            window.location.href = "../Login/login.html";
+            return;
+        }
+        const usuarioRaw = JSON.parse(usuario);
+        //console.log("usuario vindo do localStorage:", usuario);
+        //console.log("elemento #userAvatar:", document.getElementById("userAvatar"));
+        carregarAvatar(usuarioRaw);
 
     // nome do usuário
     const userNameEl = document.getElementById("userName");
     if (userNameEl) {
-        userNameEl.textContent = usuario;
+        userNameEl.textContent = usuarioRaw.nome || usuarioRaw.email || "";
     }
 
-    // avatar do usuário
+    /*  avatar do usuário
     const avatarEl = document.getElementById("userAvatar");
-    if (avatarEl) {
-        if (usuario === "Jefferson") {
+    if (avatarEl && usuario) {
+        if (usuario.nome === "Jefferson") {
             avatarEl.src = "../IMG/perfil_jefferson.jpeg";
-        } else if (usuario === "Isabella") {
+        } 
+        else if (usuario.nome === "Isabella") {
             avatarEl.src = "../IMG/perfil_isabella.jpeg";
         }
     }
+    */
 
     setTimeout(() => {
         const dashboardBtn = document.querySelector('[data-section="dashboard"]');
@@ -193,8 +206,16 @@ function carregarLib(src) {
     });
 }
 
-document.getElementById("logout").addEventListener("click", () => {
-    localStorage.removeItem("selectedUser");
+logoutBtn.addEventListener("click", () => {
+    logoutModal.classList.add("show");
+});
+
+cancelLogout.addEventListener("click", () => {
+    logoutModal.classList.remove("show");
+});
+
+confirmLogout.addEventListener("click", () => {
+    localStorage.clear();
     window.location.href = "../Login/login.html";
 });
 
@@ -213,4 +234,56 @@ if (collapseBtn && sidebarEl) {
     });
 } else {
     console.warn("collapseBtn ou sidebar não encontrado.");
+}
+
+logoutModal.addEventListener("click", (e) => {
+  if (e.target === logoutModal) {
+    logoutModal.classList.remove("show");
+  }
+});
+
+function gerarIniciais(nome) {
+
+    if (!nome) return "U";
+
+    const partes = nome.trim().split(" ");
+
+    if (partes.length === 1) {
+        return partes[0].substring(0,2).toUpperCase();
+    }
+
+    return (
+        partes[0][0] +
+        partes[partes.length - 1][0]
+    ).toUpperCase();
+}
+
+
+function gerarCor(nome){
+
+    let hash = 0;
+
+    for(let i = 0; i < nome.length; i++){
+        hash = nome.charCodeAt(i) + ((hash << 5) - hash);
+    }
+
+    const hue = hash % 360;
+
+    return `hsl(${hue},70%,45%)`;
+}
+
+
+function carregarAvatar(usuario){
+
+    const avatarEl = document.getElementById("userAvatar");
+
+    if(!avatarEl) return;
+
+    const nome = usuario?.nome || usuario?.email || "Usuário";
+
+    const iniciais = gerarIniciais(nome);
+
+    avatarEl.innerText = iniciais;
+    avatarEl.style.background = gerarCor(nome);
+
 }

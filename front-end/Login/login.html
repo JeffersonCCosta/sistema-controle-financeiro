@@ -10,9 +10,37 @@
 <body>
   <main class="container">
     <h1>Controle Financeiro</h1>
+    <p class="subtitle">Entre com e-mail e senha</p>
 
-    <p class="subtitle">Selecione um usuário para iniciar</p>
+    <section class="login-card" aria-label="Formulário de login">
+      <form id="loginForm" novalidate>
+        <label for="emailInput" class="label">E-mail</label>
+        <input type="email" id="emailInput" name="email" autocomplete="email" placeholder="seuemail@exemplo.com" required/>
 
+        <label for="passwordInput" class="label">Senha</label>
+        <div class="password-wrapper">
+          <input type="password" id="passwordInput" name="senha" autocomplete="current-password" placeholder="Digite sua senha" required minlength="3"/>
+
+          <button type="button" id="togglePasswordBtn" class="toggle-password" aria-label="Mostrar senha" aria-pressed="false" title="Mostrar senha">
+            👁️
+          </button>
+        </div>
+
+        <p id="errorMsg" class="error" aria-live="polite"></p>
+
+        <button id="loginBtn" class="btn" type="submit">
+          Entrar
+        </button>
+
+        <div class="links">
+          <a href="#" id="forgotPasswordLink">Esqueci minha senha</a>
+          <span class="dot">•</span>
+          <a href="#" id="registerLink">Registrar</a>
+        </div>
+      </form>
+    </section>
+
+    <!-- SISTEMA DE LOGIN ANTIGO
     <div class="users">
       <button type="button" class="user-card" data-user="Isabella" id="userIsabella" data-user-id="3" data-email="isabellamcecilio@outlook.com" aria-pressed="false">
         <div class="avatar">
@@ -52,7 +80,8 @@
       <p id="errorMsg" class="error"></p>
     </div>
   </div>
-  
-  <script src="app.js"></script>
+  -->
+  </main>
+  <script src="login.js"></script>
 </body>
 </html>
