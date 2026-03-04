@@ -281,6 +281,7 @@ window.grafico = window.grafico ?? null;
             'celular': '📱',
             'tv': '📺',
             'cartao': '💳',
+            'pet shop': '🐩',
             
             // Vestuário
             'roupa': '👕',
