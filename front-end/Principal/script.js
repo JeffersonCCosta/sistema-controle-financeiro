@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
         const usuarioRaw = JSON.parse(usuario);
-        //console.log("usuario vindo do localStorage:", usuario);
+        console.log("usuario vindo do localStorage:", usuario);
         //console.log("elemento #userAvatar:", document.getElementById("userAvatar"));
         carregarAvatar(usuarioRaw);
 

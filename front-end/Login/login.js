@@ -1,4 +1,4 @@
-console.log("LOGIN JS CARREGADO ✅");
+console.log("LOGIN JS CARREGADO");
 
 const BASE_URL = "https://sistema-controle-financeiro-zrep.onrender.com";
 document.addEventListener("DOMContentLoaded", () => {
@@ -11,11 +11,55 @@ document.addEventListener("DOMContentLoaded", () => {
   const togglePasswordBtn = document.getElementById("togglePasswordBtn");
   const forgotPasswordLink = document.getElementById("forgotPasswordLink");
   const registerLink = document.getElementById("registerLink");
-
-  // ✅ Se você abriu outra página (ex: Principal.html) e esse JS carregou lá,
-  // não deixa quebrar.
   if (!loginForm || !emailInput || !passwordInput || !loginBtn || !errorMsg) {
-    console.warn("Elementos do login não encontrados nesta página. app.js não será executado aqui.");
+    console.warn(
+      "Elementos do login não encontrados nesta página. login.js não será executado aqui.",
+    );
+    return;
+  }
+
+  /**Olho da senha + troca do ícone */
+  if (togglePasswordBtn) {
+    const iconEye = document.getElementById("iconEye");
+
+    const eyeOpen =
+      "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiMwMDAwMDAiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0ibHVjaWRlIGx1Y2lkZS1leWUtaWNvbiBsdWNpZGUtZXllIj48cGF0aCBkPSJNMi4wNjIgMTIuMzQ4YTEgMSAwIDAgMSAwLS42OTYgMTAuNzUgMTAuNzUgMCAwIDEgMTkuODc2IDAgMSAxIDAgMCAxIDAgLjY5NiAxMC43NSAxMC43NSAwIDAgMS0xOS44NzYgMCIvPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiLz48L3N2Zz4=";
+
+    const eyeClosed =
+      "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiMwMDAwMDAiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0ibHVjaWRlIGx1Y2lkZS1leWUtb2ZmLWljb24gbHVjaWRlLWV5ZS1vZmYiPjxwYXRoIGQ9Ik0xMC43MzMgNS4wNzZhMTAuNzQ0IDEwLjc0NCAwIDAgMSAxMS4yMDUgNi41NzUgMSAxIDAgMCAxIDAgLjY5NiAxMC43NDcgMTAuNzQ3IDAgMCAxLTEuNDQ0IDIuNDkiLz48cGF0aCBkPSJNMTQuMDg0IDE0LjE1OGEzIDMgMCAwIDEtNC4yNDItNC4yNDIiLz48cGF0aCBkPSJNMTcuNDc5IDE3LjQ5OWExMC43NSAxMC43NSAwIDAgMS0xNS40MTctNS4xNTEgMSAxIDAgMCAxIDAtLjY5NiAxMC43NSAxMC43NSAwIDAgMSA0LjQ0Ni01LjE0MyIvPjxwYXRoIGQ9Im0yIDIgMjAgMjAiLz48L3N2Zz4=";
+
+    //Estado inicial: senha escondida + ícone de "não ver" (olho cortado)
+    passwordInput.type = "password";
+    if (iconEye) iconEye.src = eyeClosed;
+    togglePasswordBtn.setAttribute("aria-pressed", "false");
+    togglePasswordBtn.setAttribute("aria-label", "Mostrar senha");
+    togglePasswordBtn.title = "Mostrar senha";
+
+    togglePasswordBtn.addEventListener("click", () => {
+      const isHidden = passwordInput.type === "password";
+
+      if (isHidden) {
+        passwordInput.type = "text";
+        if (iconEye) iconEye.src = eyeOpen; // agora está vendo
+        togglePasswordBtn.setAttribute("aria-pressed", "true");
+        togglePasswordBtn.setAttribute("aria-label", "Ocultar senha");
+        togglePasswordBtn.title = "Ocultar senha";
+      } else {
+        passwordInput.type = "password";
+        if (iconEye) iconEye.src = eyeClosed; // agora não está vendo
+        togglePasswordBtn.setAttribute("aria-pressed", "false");
+        togglePasswordBtn.setAttribute("aria-label", "Mostrar senha");
+        togglePasswordBtn.title = "Mostrar senha";
+      }
+
+      passwordInput.focus();
+    });
+  }
+
+  if (!loginForm || !emailInput || !passwordInput || !loginBtn || !errorMsg) {
+    console.warn(
+      "Elementos do login não encontrados nesta página. app.js não será executado aqui.",
+    );
     return;
   }
 
@@ -36,20 +80,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function isValidEmail(email) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  }
-
-  /** ✅ Olhinho da senha (só se existir no HTML) */
-  if (togglePasswordBtn) {
-    togglePasswordBtn.addEventListener("click", () => {
-      const isHidden = passwordInput.type === "password";
-      passwordInput.type = isHidden ? "text" : "password";
-
-      togglePasswordBtn.setAttribute("aria-pressed", String(isHidden));
-      togglePasswordBtn.setAttribute("aria-label", isHidden ? "Ocultar senha" : "Mostrar senha");
-      togglePasswordBtn.title = isHidden ? "Ocultar senha" : "Mostrar senha";
-
-      passwordInput.focus();
-    });
   }
 
   /** Links (placeholder) */
@@ -97,7 +127,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const response = await fetch(`${BASE_URL}/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, senha })
+        body: JSON.stringify({ email, senha }),
       });
 
       if (!response.ok) {
@@ -108,19 +138,16 @@ document.addEventListener("DOMContentLoaded", () => {
       const usuario = await response.json();
 
       localStorage.setItem("usuarioLogado", JSON.stringify(usuario));
-localStorage.setItem("selectedUserEmail", email);
+      localStorage.setItem("selectedUserEmail", email);
 
-// ✅ ESSENCIAL pro resto do sistema
-if (usuario?.id != null) {
-  localStorage.setItem("selectedUserId", String(usuario.id));
-}
+      if (usuario?.id != null) {
+        localStorage.setItem("selectedUserId", String(usuario.id));
+      }
+      if (usuario?.nome) {
+        localStorage.setItem("selectedUser", usuario.nome);
+      }
 
-// opcional (se você usa nome em algum lugar)
-if (usuario?.nome) {
-  localStorage.setItem("selectedUser", usuario.nome);
-}
-
-window.location.href = "../Principal/Principal.html";
+      window.location.href = "../Principal/Principal.html";
     } catch (err) {
       console.error(err);
       setError("Erro ao conectar com o servidor. Tente novamente.");
