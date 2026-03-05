@@ -140,6 +140,26 @@ window.grafico = window.grafico ?? null;
         });
     }
 
+    function getTimestampTransacao(t) {
+        const s = t?.data ?? t?.createdAt ?? t?.dataTransacao;
+        if (!s) return 0;
+
+    // Se vier no formato YYYY-MM-DD (ou ISO começando com isso), força data "local" sem fuso
+        if (typeof s === "string") {
+            const m = s.match(/^(\d{4})-(\d{2})-(\d{2})/);
+            if (m) {
+                const y = Number(m[1]);
+                const mo = Number(m[2]) - 1;
+                const d = Number(m[3]);
+                return new Date(y, mo, d).getTime();
+            }
+        }
+
+        const dt = new Date(s);
+        const time = dt.getTime();
+        return Number.isFinite(time) ? time : 0;
+    }
+
     function mostrarTransacoesRecentes(receitas, despesas) {
         const container = document.getElementById('listaTransacoes');
         
@@ -149,11 +169,17 @@ window.grafico = window.grafico ?? null;
         const todas = [
             ...receitas.map(r => ({ ...r, tipo: 'receita' })),
             ...despesas.map(d => ({ ...d, tipo: 'despesa' }))
-        ].sort((a, b) => {
-            const dataA = new Date(a.data || a.createdAt || a.dataTransacao);
-            const dataB = new Date(b.data || b.createdAt || b.dataTransacao);
-            return dataB - dataA;
-        }).slice(0, 6); // Pega as 6 mais recentes
+        ].sort((a, b) => { // MAIS RECENTES PRIMEIRO
+            const tb = getTimestampTransacao(b);
+            const ta = getTimestampTransacao(a);
+            if (tb !== ta) return tb - ta;
+
+            // Desempate (se tiver id)
+            const ib = Number(b.id ?? 0);
+            const ia = Number(a.id ?? 0);
+            return ib - ia;
+        })
+            .slice(0, 6); // Pega as 6 mais recentes
         
         if (todas.length === 0) {
             container.innerHTML = '<p style="text-align: center; color: #6b7280; font-size: 14px;">Nenhuma transação encontrada</p>';

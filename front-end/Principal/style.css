@@ -71,7 +71,7 @@ body{
   padding: 12px 0;
 }
 
-/* Avatar */
+/** Avatar 
 .avatar {
   width: 90px;
   height: 90px;
@@ -81,9 +81,9 @@ body{
   display: grid;
   place-items: center;
 
-  overflow: visible;          /* <- importante */
-  background: transparent;    /* <- remove o “vidro” em cima */
-  border: none;               /* opcional */
+  overflow: visible;          /* <- importante **
+  background: transparent;    /* <- remove o “vidro” em cima *
+  border: none;               /* opcional **
 }
 
 .avatar a {
@@ -95,10 +95,12 @@ body{
   text-decoration: none;
 }
 
+
 .sidebar.collapsed .avatar {
     width: 56px;
     height: 56px;
 }
+    **/
 
 /* Roda o botão ao colapsar */
 .sidebar.collapsed .collapse-btn {
@@ -187,6 +189,45 @@ body{
   gap:14px;
   border-bottom:1px solid rgba(15,23,42,0.06);
   box-shadow:var(--shadow);
+  justify-content: space-between;
+}
+
+.topbar-user{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-left: auto;
+}
+
+.topbar-avatar{
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display:grid;
+  place-items:center;
+  font-weight:800;
+  font-size:14px;
+  color:#fff;
+  background: var(--accent);
+  user-select:none;
+  box-shadow: var(--shadow);
+}
+
+.topbar-user-info{
+  display:flex;
+  flex-direction:column;
+  line-height: 1.1;
+}
+
+#topbarUserName{
+  font-size: 13px;
+  font-weight: 700;
+}
+
+#topbarUserRole{
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: .2px;
 }
 
 .menu-btn{
@@ -362,4 +403,114 @@ body{
   width: 56px;
   height: 56px;
   font-size: 18px;
+}
+
+/* ===== Dropdown do usuário (topbar) ===== */
+.topbar-user{
+  position: relative;
+  margin-left: auto;
+}
+
+.user-trigger{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  border:0;
+  background: transparent;
+  cursor:pointer;
+  padding: 6px 8px;
+  border-radius: 10px;
+  transition: background .15s ease;
+}
+
+.user-trigger:hover{
+  background: rgba(15,23,42,0.04);
+}
+
+.user-trigger:focus-visible{
+  outline: 3px solid rgba(43,110,246,0.25);
+  outline-offset: 2px;
+}
+
+.caret{
+  font-size: 14px;
+  color: var(--muted);
+  margin-left: 2px;
+}
+
+/* menu */
+.user-menu{
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: 220px;
+
+  background: var(--card);
+  border: 1px solid rgba(15,23,42,0.08);
+  border-radius: 12px;
+  box-shadow: 0 18px 40px rgba(15,23,42,0.18);
+
+  padding: 8px;
+  display: none;
+  z-index: 1200;
+}
+
+.topbar-user.open .user-menu{
+  display: block;
+}
+
+/* itens */
+.user-menu-item{
+  width: 100%;
+  text-align: left;
+  border: 0;
+  background: transparent;
+  padding: 10px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #0f172a;
+  transition: background .15s ease;
+}
+
+.user-menu-item:hover{
+  background: rgba(43,110,246,0.10);
+}
+
+.user-menu-item.danger:hover{
+  background: rgba(239,68,68,0.12);
+}
+
+.user-menu-sep{
+  height: 1px;
+  background: rgba(15,23,42,0.08);
+  margin: 6px 0;
+}
+
+/* mobile: esconde o texto do nome e role, mantém avatar + dropdown */
+@media (max-width: 520px){
+  .topbar-user-info{ display:none; }
+}
+
+.logo{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  margin-bottom:10px;
+}
+
+.logo-img{
+  width:120px;
+  height:auto;
+  object-fit:contain;
+  transition: transform .2s ease;
+}
+
+.logo-img:hover{
+  transform: scale(1.05);
+}
+
+/* quando menu estiver recolhido */
+.sidebar.collapsed .logo-img{
+  width:40px;
 }

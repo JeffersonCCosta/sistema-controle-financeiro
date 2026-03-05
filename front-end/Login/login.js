@@ -169,11 +169,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const t2 = setTimeout(() => {
       setStatus("Servidor iniciando (primeiro acesso do dia). Aguarde mais alguns segundos...");
-    }, 6000);
+    }, 10000);
 
     const t3 = setTimeout(() => {
       setStatus("Ainda conectando... isso pode demorar um pouco na primeira tentativa.");
-    }, 12000);
+    }, 15000);
 
     try {
       const response = await fetch(`${BASE_URL}/api/auth/login`, {

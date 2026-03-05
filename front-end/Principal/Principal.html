@@ -5,16 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel - Controle Financeiro</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="website icon" type="icon" href="../IMG/icon.png">
+    <link rel="website icon" type="icon" href="../IMG/logo-fincontrol.png">
 </head>
 <body>
 
     <aside class="sidebar" id="sidebar">
-  <button id="collapseBtn" class="collapse-btn" aria-expanded="true" title="Recolher menu">⮜</button>
+    <button id="collapseBtn" class="collapse-btn" aria-expanded="true" title="Recolher menu">☰</button>
 
-  <div class="avatar">
+  <div class="logo">
     <a href="Principal.html" aria-label="Ir para início">
-        <div id="userAvatar" class="user-avatar" aria-label="Avatar do usuário"></div>
+        <img src="../IMG/logoHorizontal-fincontrol.png" alt="Controle Financeiro" class="logo-img">
     </a>
   </div>
 
@@ -26,9 +26,11 @@
     <button class="menu-item" data-section="relatorios" data-tooltip="Relatórios">📈 <span>Relatórios</span></button>
   </nav>
 
+  <!--
   <div class="bottom">
     <button class="menu-item" id="logout" data-tooltip="Sair">↩ <span>Sair</span></button>
   </div>
+  -->
 </aside>
 
 <div class="overlay" id="overlay" aria-hidden="true"></div>
@@ -36,8 +38,28 @@
 
     <div class="main">
         <header class="topbar">
-            <button id="toggleMenu" class="menu-btn">☰</button>
+            <button id="toggleMenu" class="menu-btn"></button>
             <h1 id="sectionTitle"></h1>
+
+            <div class="topbar-user" id="userDropdown">
+                <button class="user-trigger" id="userTrigger" aria-haspopup="menu" aria-expanded="false">
+                    <div class="topbar-avatar" id="topbarAvatar"></div>
+
+                    <div class="topbar-user-info">
+                        <p id="topbarUserName"></p>
+                        <small id="topbarUserRole"></small>
+                    </div>
+
+                    <span class="caret" aria-hidden="true">▾</span>
+                </button>
+
+                <div class="user-menu" id="userMenu" role="menu" aria-label="Menu do usuário">
+                    <button class="user-menu-item" id="goProfile" role="menuitem">👤 Perfil</button>
+                    <button class="user-menu-item" id="goPassword" role="menuitem">🔒 Alterar senha</button>
+                    <div class="user-menu-sep" role="separator"></div>
+                        <button class="user-menu-item danger" id="menuLogout" role="menuitem">↩ Sair</button>
+                    </div>
+                </div>
         </header>
 
         <section id="contentArea">

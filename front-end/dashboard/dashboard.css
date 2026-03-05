@@ -155,7 +155,7 @@
 }
 
 .loading-transacoes {
-    text-align: center;
+    text-align: left;
     color: var(--muted);
     padding: 40px 0;
     font-size: 14px;

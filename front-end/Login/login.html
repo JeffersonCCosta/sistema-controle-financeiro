@@ -5,12 +5,14 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Controle Financeiro</title>
   <link rel="stylesheet" href="styles.css" />
-  <link rel="website icon" type="icon" href="../IMG/icon.png">
+  <link rel="website icon" type="icon" href="../IMG/logo-fincontrol.png">
 </head>
 <body>
   <main class="container">
-    <h1>Controle Financeiro</h1>
-    <p class="subtitle">Entre com e-mail e senha</p>
+
+    <div class="logo-container">
+      <img src="../IMG/logoVertical-fincontrol.png" alt="FinControl - Controle Financeiro" class="logo">
+    </div>
 
     <section class="login-card" aria-label="Formulário de login">
       <form id="loginForm" novalidate>
@@ -30,12 +32,9 @@
 
         <button id="loginBtn" class="btn" type="submit">
           <span class="btn-text">Entrar</span>
-          <span class="spinner" aria-hidden="true"></span>
-          
-          <div>
-            <p id="statusMsg" class="status" aria-live="polite"></p>
-          </div>          
+          <span class="spinner" aria-hidden="true"></span>         
         </button>
+        <p id="statusMsg" class="status" aria-live="polite"></p>
 
         <div class="links">
           <a href="#" id="forgotPasswordLink">Esqueci minha senha</a>

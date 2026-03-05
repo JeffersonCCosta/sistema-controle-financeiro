@@ -14,9 +14,24 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
         const usuarioRaw = JSON.parse(usuario);
-        console.log("usuario vindo do localStorage:", usuario);
+        //console.log("usuario vindo do localStorage:", usuario);
         //console.log("elemento #userAvatar:", document.getElementById("userAvatar"));
-        carregarAvatar(usuarioRaw);
+
+        const topbarAvatar = document.getElementById("topbarAvatar");
+        const topbarUserName = document.getElementById("topbarUserName");
+        const topbarUserRole = document.getElementById("topbarUserRole");
+
+        if (topbarAvatar) {
+            const nome = usuarioRaw?.nome || usuarioRaw?.email || "Usuário";
+
+            topbarAvatar.innerText = gerarIniciais(nome);
+            topbarAvatar.style.background = gerarCor(nome);
+
+            if (topbarUserName) topbarUserName.textContent = nome;
+
+            const cargo = (usuarioRaw?.tipoUsuario || usuarioRaw?.tipo || "USUÁRIO").toString();
+            if (topbarUserRole) topbarUserRole.textContent = cargo.toUpperCase();
+        }
 
     // nome do usuário
     const userNameEl = document.getElementById("userName");
@@ -42,6 +57,69 @@ document.addEventListener("DOMContentLoaded", () => {
             dashboardBtn.click();
         }
     }, 100);
+});
+
+// ===== Dropdown usuário (topbar) =====
+const userDropdown = document.getElementById("userDropdown");
+const userTrigger  = document.getElementById("userTrigger");
+const userMenu     = document.getElementById("userMenu");
+
+function closeUserMenu(){
+  if(!userDropdown) return;
+  userDropdown.classList.remove("open");
+  userTrigger?.setAttribute("aria-expanded", "false");
+}
+
+function toggleUserMenu(){
+  if(!userDropdown) return;
+  const willOpen = !userDropdown.classList.contains("open");
+  userDropdown.classList.toggle("open", willOpen);
+  userTrigger?.setAttribute("aria-expanded", String(willOpen));
+}
+
+userTrigger?.addEventListener("click", (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  toggleUserMenu();
+});
+
+// fecha clicando fora
+document.addEventListener("click", (e) => {
+  if(!userDropdown) return;
+  if (!userDropdown.contains(e.target)) closeUserMenu();
+});
+
+// fecha ESC
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") closeUserMenu();
+});
+
+// ações
+document.getElementById("goProfile")?.addEventListener("click", () => {
+  closeUserMenu();
+  // TODO: aponte para sua página real de perfil
+  contentArea.innerHTML = `
+    <div class="card">
+      <h2>Perfil</h2>
+      <p>Em construção…</p>
+    </div>
+  `;
+});
+
+document.getElementById("goPassword")?.addEventListener("click", () => {
+  closeUserMenu();
+  // TODO: aponte para sua tela real de alterar senha
+  contentArea.innerHTML = `
+    <div class="card">
+      <h2>Alterar senha</h2>
+      <p>Em construção…</p>
+    </div>
+  `;
+});
+
+document.getElementById("menuLogout")?.addEventListener("click", () => {
+  closeUserMenu();
+  logoutModal.classList.add("show"); // reaproveita seu modal
 });
 
 const menuButtons = document.querySelectorAll(".menu-item");
@@ -206,15 +284,15 @@ function carregarLib(src) {
     });
 }
 
-logoutBtn.addEventListener("click", () => {
-    logoutModal.classList.add("show");
+logoutBtn?.addEventListener("click", () => {
+    logoutModal?.classList.add("show");
 });
 
-cancelLogout.addEventListener("click", () => {
-    logoutModal.classList.remove("show");
+cancelLogout?.addEventListener("click", () => {
+    logoutModal?.classList.remove("show");
 });
 
-confirmLogout.addEventListener("click", () => {
+confirmLogout?.addEventListener("click", () => {
     localStorage.clear();
     window.location.href = "../Login/login.html";
 });
@@ -236,7 +314,7 @@ if (collapseBtn && sidebarEl) {
     console.warn("collapseBtn ou sidebar não encontrado.");
 }
 
-logoutModal.addEventListener("click", (e) => {
+logoutModal?.addEventListener("click", (e) => {
   if (e.target === logoutModal) {
     logoutModal.classList.remove("show");
   }
@@ -270,20 +348,4 @@ function gerarCor(nome){
     const hue = hash % 360;
 
     return `hsl(${hue},70%,45%)`;
-}
-
-
-function carregarAvatar(usuario){
-
-    const avatarEl = document.getElementById("userAvatar");
-
-    if(!avatarEl) return;
-
-    const nome = usuario?.nome || usuario?.email || "Usuário";
-
-    const iniciais = gerarIniciais(nome);
-
-    avatarEl.innerText = iniciais;
-    avatarEl.style.background = gerarCor(nome);
-
 }
