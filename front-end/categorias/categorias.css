@@ -5,6 +5,10 @@
     --muted: #6b7280;
     --shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
 
+    --primary-green: #4CAF50;
+    --primary-purple: #7B2CBF;
+    --dark-text: #1F2937;
+
     font-family: Inter, system-ui, -apple-system;
 }
 

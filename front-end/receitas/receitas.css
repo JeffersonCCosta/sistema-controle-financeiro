@@ -42,3 +42,74 @@ h2{
 .section-content.hidden {
     display: none;
 }
+
+/* FILTRO POR DATA*/
+.filtros-tabela {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 16px 0;
+    padding: 14px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+}
+
+.filtros-header {
+    margin-bottom: 4px;
+}
+
+.filtros-header h3 {
+    text-align: center;
+    font-size: 18px;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.filtros-controle {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    gap: 12px;
+}
+
+.filtro-grupo {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.filtro-grupo label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #374151;
+    margin: auto 3px;
+}
+
+.filtro-grupo input {
+    min-width: 170px;
+    padding: 10px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+}
+
+.filtro-acoes {
+    display: flex;
+    gap: 8px;
+}
+
+.filtro-acoes button {
+    padding: 10px 14px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.btn-secundario {
+    background: #e5e7eb;
+    color: #111827;
+}
+
+.titulo-table {
+    margin: 15px;
+}

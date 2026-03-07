@@ -1,4 +1,5 @@
 console.log("JS de despesas carregado");
+let despesasData = [];
 
 // Buscar Categorias
 async function carregarCategorias() {
@@ -29,7 +30,9 @@ async function carregarDespesas() {
         const userId = localStorage.getItem("selectedUserId");
         const resp = await fetch (`${window.API.DESPESAS}/usuario/${userId}`);
         const despesas = await resp.json();
-        preencherTabelaDespesas(despesas);
+
+        despesasData = despesas;
+        preencherTabelaDespesas(despesasData);
     } catch (e) {
         showAlert("Erro ao carregar despesas", "error");
         console.error(e);
@@ -38,6 +41,9 @@ async function carregarDespesas() {
 
 function preencherTabelaDespesas(lista) {
     const tabela = document.getElementById("tabela-despesas");
+
+    lista.sort((a, b) => new Date(b.data) - new Date(a.data));
+
     if(!tabela){
         console.warn("tabela-despesas não encontrada (tela de despesas não está carregada).");
         return;
@@ -50,7 +56,7 @@ function preencherTabelaDespesas(lista) {
         tr.innerHTML = `
             <td>${index + 1}</td>
             <td>${d.descricao}</td>
-            <td>${Number(d.valor).toFixed(2)}</td>
+            <td>${Number(d.valor).toLocaleString('pt-BR',{style: 'currency', currency: 'BRL'})}</td>
             <td>${formatarData(d.data)}</td>
             <td>${d.categoria.nome}</td>
             <td>${d.observacao ?? ""}</td>
@@ -243,8 +249,50 @@ function configurarToggleDespesa() {
 
     toggle.addEventListener("click", () => {
         const estaOculto = conteudo.classList.toggle("hidden");
-        icone.textContent = estaOculto ? "➖" : "➕";
+        icone.textContent = estaOculto ? "➕" : "➖";
     });
+}
+
+function filtrarDespesasPorData() {
+    const dataInicio = document.getElementById("filtroDataInicio").value;
+    const dataFim = document.getElementById("filtroDataFim").value;
+
+    if(dataInicio > dataFim){
+        showAlert("A data inicial não pode ser maior que a data final", "error")
+        return;
+    }
+
+    let listaFiltrada = [...despesasData];
+
+    if(dataInicio) {
+        listaFiltrada = listaFiltrada.filter(r => r.data >= dataInicio);
+    }
+
+    if(dataFim) {
+        listaFiltrada = listaFiltrada.filter(r => r.data <= dataFim);
+    }
+
+    preencherTabelaDespesas(listaFiltrada);
+}
+
+function limparFiltroDespesas() {
+    document.getElementById("filtroDataInicio").value = "";
+    document.getElementById("filtroDataFim").value = "";
+
+    preencherTabelaDespesas(despesasData);
+}
+
+function configurarFiltrosDespesas() {
+    const btnFiltrar = document.getElementById("btnFiltrarDespesas");
+    const btnLimpar = document.getElementById("btnLimparFiltroDespesas");
+
+        if(btnFiltrar) {
+        btnFiltrar.addEventListener("click", filtrarDespesasPorData);
+    }
+
+    if(btnLimpar) {
+        btnLimpar.addEventListener("click", limparFiltroDespesas);
+    }
 }
 
 function initDespesas() {
@@ -253,6 +301,7 @@ function initDespesas() {
     carregarCategorias();
     carregarDespesas();
     configurarToggleDespesa();
+    configurarFiltrosDespesas();
 
     const form = document.getElementById("formDespesa");
     if (!form) {

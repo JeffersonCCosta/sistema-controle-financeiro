@@ -1,4 +1,5 @@
 console.log("JS de receitas carregado");
+let receitasData = [];
 
 // Buscar Categorias
 async function carregarCategorias() {
@@ -33,7 +34,9 @@ async function carregarReceitas() {
         const userId = localStorage.getItem("selectedUserId");
         const resp = await fetch(`${window.API.RECEITAS}/usuario/${userId}`);
         const receitas = await resp.json();
-        preencherTabelaReceitas(receitas);
+
+        receitasData = receitas;
+        preencherTabelaReceitas(receitasData);
     } catch (e) {
         showAlert("Erro ao carregar receitas", "error");
         console.error(e);
@@ -42,6 +45,8 @@ async function carregarReceitas() {
 
 function preencherTabelaReceitas(lista) {
     const tabela = document.getElementById("tabela-receitas");
+
+    lista.sort((a, b) => new Date(b.data) - new Date(a.data));
 
     if (!tabela) {
     console.warn("tabela-receitas não encontrada (tela de despesas não está carregada).");
@@ -56,7 +61,7 @@ function preencherTabelaReceitas(lista) {
         tr.innerHTML = `
             <td>${index + 1}</td>
             <td>${r.descricao}</td>
-            <td>${Number(r.valor).toFixed(2)}</td>
+            <td>${Number(r.valor).toLocaleString('pt-BR',{style: 'currency', currency: 'BRL'})}</td>
             <td>${formatarData(r.data)}</td>
             <td>${r.categoria?.nome ?? "-"}</td>
             <td>${r.observacao ?? ""}</td>
@@ -202,8 +207,57 @@ function configurarToggleReceita() {
 
     toggle.addEventListener("click", () => {
         const estaOculto = conteudo.classList.toggle("hidden");
-        icone.textContent = estaOculto ? "➖" : "➕" ;
+        icone.textContent = estaOculto ? "➕" : "➖" ;
     });
+}
+
+function filtrarReceitasPorData() {
+    const dataInicio = document.getElementById("filtroDataInicio").value;
+    const dataFim = document.getElementById("filtroDataFim").value;
+
+    if(dataInicio > dataFim){
+        showAlert("A data inicial não pode ser maior que a data final", "error")
+        return;
+    }
+
+    let listaFiltrada = [...receitasData];
+
+    if(dataInicio) {
+        listaFiltrada = listaFiltrada.filter(r => r.data >= dataInicio);
+    }
+
+    if(dataFim) {
+        listaFiltrada = listaFiltrada.filter(r => r.data <= dataFim);
+    }
+
+    preencherTabelaReceitas(listaFiltrada);
+}
+
+function limparFiltroReceitas() {
+    document.getElementById("filtroDataInicio").value = "";
+    document.getElementById("filtroDataFim").value = "";
+
+    preencherTabelaReceitas(receitasData);
+}
+
+function configurarFiltrosReceitas() {
+    const btnFiltrar = document.getElementById("btnFiltrarReceitas");
+    const btnLimpar = document.getElementById("btnLimparFiltroReceitas");
+
+    /* FILTRAR ALTOMATICAMENTE
+    const dataInicio = document.getElementById("filtroDataInicio");
+    const dataFim = document.getElementById("filtroDataFim");
+
+    dataInicio.getElementById("filtroDataInicio").addEventListener("change", filtrarReceitasPorData);
+    dataFim.getElementById("filtroDataFim").addEventListener("change", filtrarReceitasPorData);
+    */
+    if(btnFiltrar) {
+        btnFiltrar.addEventListener("click", filtrarReceitasPorData);
+    }
+
+    if(btnLimpar) {
+        btnLimpar.addEventListener("click", limparFiltroReceitas);
+    }
 }
 
 function initReceitas() {
@@ -212,6 +266,7 @@ function initReceitas() {
     carregarCategorias();
     carregarReceitas();
     configurarToggleReceita();
+    configurarFiltrosReceitas();
 
     const form = document.getElementById("formReceita");
     if (!form) {
