@@ -3,3 +3,42 @@
 h2{
     margin-top: 0;
 }
+
+.section-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    cursor: pointer;
+    user-select: none;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    transition: all 0.2s ease;
+}
+
+.section-toggle:hover {
+    background: #f9fafb;
+}
+
+.section-toggle h2 {
+    margin: 0;
+    font-size: 22px;
+}
+
+.toggle-icon {
+    margin-right: 8px;
+    font-size: 18px;
+    transition: transform 0.2s ease;
+}
+
+.section-content {
+    overflow: hidden;
+    transition: all 0.25s ease;
+}
+
+.section-content.hidden {
+    display: none;
+}

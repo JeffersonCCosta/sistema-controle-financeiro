@@ -228,13 +228,23 @@ async function carregarCategoriasSelectEdicao(idSelecionado) {
     }
 }
 
-
-
 function formatarData(dataStr) {
     if (!dataStr) return "";
 
     const [ano, mes, dia] = dataStr.split("-");
     return `${dia}/${mes}/${ano}`;
+}
+function configurarToggleDespesa() {
+    const toggle = document.getElementById("toggleDespesa");
+    const conteudo = document.getElementById("conteudoDespesa");
+    const icone = document.getElementById("iconeDespesa");
+    
+    if (!toggle || !conteudo || !icone) return;
+
+    toggle.addEventListener("click", () => {
+        const estaOculto = conteudo.classList.toggle("hidden");
+        icone.textContent = estaOculto ? "➖" : "➕";
+    });
 }
 
 function initDespesas() {
@@ -242,6 +252,7 @@ function initDespesas() {
 
     carregarCategorias();
     carregarDespesas();
+    configurarToggleDespesa();
 
     const form = document.getElementById("formDespesa");
     if (!form) {

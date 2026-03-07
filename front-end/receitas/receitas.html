@@ -1,31 +1,37 @@
 <link rel="stylesheet" href="../receitas/receitas.css">
 
 <div class="page-receitas">
+    <div class="section-toggle" id="toggleReceita">
+        <span class="toggle-icon" id="iconeReceita">➖</span>
+        <h2>Cadastro de Receita</h2>
+    </div>
+    
 
-    <h2>Cadastro de Receita</h2>
+    <div class="section-content hidden" id="conteudoReceita">
+        <form id="formReceita">
+            <label >Descrição</label>
+            <input type="text" id="descricao" required placeholder="Ex: Salário">
 
-    <form id="formReceita">
-        <label >Descrição</label>
-        <input type="text" id="descricao" required placeholder="Ex: Salário">
+            <label for="">Valor</label>
+            <input type="number" id="valor" step="0.01" required placeholder="0,00">
 
-        <label for="">Valor</label>
-        <input type="number" id="valor" step="0,01" required placeholder="0,00">
+            <label for="">Data</label>
+            <input type="date" id="data" required>
 
-        <label for="">Data</label>
-        <input type="date" id="data" required>
+            <label for="">Categoria</label>
+            <select id="categoria" required>
+                <option value="">Selecione</option>
+            </select>
 
-        <label for="">Categoria</label>
-        <select id="categoria" required>
-            <option value="">Selecione</option>
-        </select>
+            <label for="">Observação</label>
+            <input type="text" id="observacao" placeholder="Opcional">
 
-        <label for="">Observação</label>
-        <input type="text" id="observacao" placeholder="Opcional">
-
-        <button type="submit">Salvar</button>
-    </form>
+            <button type="submit">Salvar</button>
+        </form>
+    </div>
 
     <hr>
+
     <div class="table-wrap">
         <table>
             <thead>
@@ -53,7 +59,7 @@
             <input type="text" id="editarDescricao">
 
             <label>Valor</label>
-            <input type="number" id="editarValor" step="0,01">
+            <input type="number" id="editarValor" step="0.01">
 
             <label>Data</label>
             <input type="date" id="editarData">

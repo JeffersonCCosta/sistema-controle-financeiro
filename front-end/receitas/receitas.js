@@ -193,11 +193,25 @@ function formatarData(dataStr) {
     return `${dia}/${mes}/${ano}`;
 }
 
+function configurarToggleReceita() {
+    const toggle = document.getElementById("toggleReceita");
+    const conteudo = document.getElementById("conteudoReceita");
+    const icone = document.getElementById("iconeReceita");
+
+    if(!toggle || !conteudo || !icone) return;
+
+    toggle.addEventListener("click", () => {
+        const estaOculto = conteudo.classList.toggle("hidden");
+        icone.textContent = estaOculto ? "➖" : "➕" ;
+    });
+}
+
 function initReceitas() {
     console.log("INIT RECEITAS EXECUTOU");
 
     carregarCategorias();
     carregarReceitas();
+    configurarToggleReceita();
 
     const form = document.getElementById("formReceita");
     if (!form) {
