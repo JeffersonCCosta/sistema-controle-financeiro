@@ -297,6 +297,27 @@ confirmLogout?.addEventListener("click", () => {
     window.location.href = "../Login/login.html";
 });
 
+const session_timeout = 60 * 60 * 1000;
+let sessionTimer;
+
+function encerrarSessaoPorInatividade() {
+    localStorage.clear();
+
+    const modal = document.getElementById("sessionExpiredModal");
+    const btn = document.getElementById("sessionLoginBtn");
+
+    modal?.classList.add("show");
+
+    btn?.addEventListener("click", () => {
+        window.location.href = "../Login/login.html";
+    });
+}
+
+function resetSessionTimer() {
+    clearTimeout(sessionTimer);
+    sessionTimer = setTimeout(encerrarSessaoPorInatividade, session_timeout);
+}
+
 const collapseBtn = document.getElementById("collapseBtn");
 const sidebarEl = document.getElementById("sidebar");
 
@@ -349,3 +370,9 @@ function gerarCor(nome){
 
     return `hsl(${hue},70%,45%)`;
 }
+
+["click", "mousemove", "keydow", "scroll", "touchstart"].forEach((eventName) => {
+    document.addEventListener(eventName, resetSessionTimer);
+});
+
+resetSessionTimer();
