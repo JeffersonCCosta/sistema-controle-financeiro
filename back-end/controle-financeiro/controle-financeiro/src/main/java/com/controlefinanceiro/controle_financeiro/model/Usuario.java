@@ -25,6 +25,14 @@ public class Usuario {
     @Column(nullable = false, name = "criado_em")
     private LocalDateTime criadoEm;
 
+    @Column(name = "reset_token")
+    @JsonIgnore
+    private String resetToken;
+
+    @Column(name = "reset_token_expiracao")
+    @JsonIgnore
+    private LocalDateTime resetTokenExpiracao;
+
     @PrePersist
     public void prePresist(){
         this.criadoEm = LocalDateTime.now();
@@ -76,5 +84,21 @@ public class Usuario {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getResetToken() {
+        return resetToken;
+    }
+
+    public void setResetToken(String resetToken) {
+        this.resetToken = resetToken;
+    }
+
+    public LocalDateTime getResetTokenExpiracao() {
+        return resetTokenExpiracao;
+    }
+
+    public void setResetTokenExpiracao(LocalDateTime resetTokenExpiracao) {
+        this.resetTokenExpiracao = resetTokenExpiracao;
     }
 }

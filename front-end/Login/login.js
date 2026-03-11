@@ -21,6 +21,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const forgotPasswordLink = document.getElementById("forgotPasswordLink");
   const registerLink = document.getElementById("registerLink");
 
+  const forgotPasswordModal = document.getElementById("forgotPasswordModal");
+  const forgotEmailInput = document.getElementById("forgotEmailInput");
+  const forgotErrorMsg = document.getElementById("forgotErrorMsg");
+  const sendRecoveryBtn = document.getElementById("sendRecoveryBtn");
+  const closeForgotModalBtn = document.getElementById("closeForgotModalBtn");
+
   if (!loginForm || !emailInput || !passwordInput || !loginBtn || !errorMsg) {
     console.warn("Elementos do login não encontrados. login.js não será executado.");
     return;
@@ -119,10 +125,62 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  /** Links (placeholder) */
   forgotPasswordLink?.addEventListener("click", (e) => {
     e.preventDefault();
-    alert("Em breve: recuperação de senha.");
+    forgotPasswordModal?.classList.add("show");
+    forgotErrorMsg.textContent = "";
+    forgotEmailInput.value = emailInput.value || "";
+    forgotEmailInput.focus();
+  });
+
+  closeForgotModalBtn?.addEventListener("click", () => {
+    forgotPasswordModal?.classList.remove("show");
+  });
+
+  forgotPasswordModal?.addEventListener("click", (e) => {
+    if(e.target === forgotPasswordModal) {
+      forgotPasswordModal.classList.remove("show");
+    }
+  });
+
+  sendRecoveryBtn?.addEventListener("click", async () => {
+    const email = (forgotEmailInput.value || "").trim().toLowerCase();
+    forgotErrorMsg.textContent = "";
+    
+    if(!email) {
+      forgotErrorMsg.textContent = "Informe seu e-mail cadastrado.";
+      forgotEmailInput.focus();
+      return;
+    }
+
+    if(!isValidEmail(email)) {
+      forgotErrorMsg.textContent = "E-mail inválido.";
+      forgotEmailInput.focus();
+      return;
+    }
+
+    try {
+      const response = await fetch(`${BASE_URL}/api/auth/esqueci-senha`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ email })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        forgotErrorMsg.textContent = data.message || "Erro ao solicitar recuperação.";
+        return;
+      }
+
+      forgotErrorMsg.style.color = "#16a34a";
+      forgotErrorMsg.textContent = data.message || "Solicitação enviada com sucesso.";
+    } catch (error) {
+      console.error(error);
+      forgotErrorMsg.textContent = "Erro ao conectar com o servidor.";
+    }
   });
 
   registerLink?.addEventListener("click", (e) => {

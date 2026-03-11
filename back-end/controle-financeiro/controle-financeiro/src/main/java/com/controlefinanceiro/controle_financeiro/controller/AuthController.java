@@ -1,13 +1,19 @@
 package com.controlefinanceiro.controle_financeiro.controller;
 
 import com.controlefinanceiro.controle_financeiro.model.Usuario;
+import com.controlefinanceiro.controle_financeiro.model.dto.ForgotPasswordRequest;
 import com.controlefinanceiro.controle_financeiro.model.dto.LoginRequestDTO;
+import com.controlefinanceiro.controle_financeiro.model.dto.ResetPasswordRequest;
 import com.controlefinanceiro.controle_financeiro.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -19,8 +25,9 @@ public class AuthController {
 
     private final UsuarioRepository usuarioRepository;
 
-    public AuthController(UsuarioRepository usuarioRepository) {
+    public AuthController(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @PostMapping("/login")
@@ -46,5 +53,57 @@ public class AuthController {
     public Usuario criar(@RequestBody Usuario usuario){
         usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
         return usuarioRepository.save(usuario);
+    }
+
+    @PostMapping("/esqueci-senha")
+    public ResponseEntity<?> esqueciSenha(@RequestBody ForgotPasswordRequest request) {
+        String email = request.getEmail();
+
+        var usuarioOpt = usuarioRepository.findByEmail(email);
+
+        if (usuarioOpt.isEmpty()) {
+            return ResponseEntity.ok(Map.of(
+                    "message", "Se o e-mail existir, enviaremos instruções para redefinição."
+            ));
+        }
+
+        Usuario usuario = usuarioOpt.get();
+
+        String token = UUID.randomUUID().toString();
+        usuario.setResetToken(token);
+        usuario.setResetTokenExpiracao(LocalDateTime.now().plusMinutes(30));
+
+        usuarioRepository.save(usuario);
+
+        String link = "http://127.0.0.1:5500/Login/reset-password.html?token=" + token;
+        System.out.println("LINK DE RECUPERAÇÃO: " + link);
+
+        return ResponseEntity.ok(Map.of(
+                "message", "Se o e-mail existir, enviaremos instruções para redefinição."
+        ));
+    }
+
+    @PostMapping("/redefinir-senha")
+    public ResponseEntity<?> redefinirSenha(@RequestBody ResetPasswordRequest request) {
+        var usuarioOpt = usuarioRepository.findByResetToken(request.getToken());
+
+        if (usuarioOpt.isEmpty()) {
+            return ResponseEntity.badRequest().body(Map.of("message", "Token inválido."));
+        }
+
+        Usuario usuario = usuarioOpt.get();
+
+        if (usuario.getResetTokenExpiracao() == null ||
+        usuario.getResetTokenExpiracao().isBefore(LocalDateTime.now())) {
+            return ResponseEntity.badRequest().body(Map.of("message", "Token expirado"));
+        }
+
+        usuario.setSenha(passwordEncoder.encode(request.getNovaSenha()));
+        usuario.setResetToken(null);
+        usuario.setResetTokenExpiracao(null);
+
+        usuarioRepository.save(usuario);
+
+        return ResponseEntity.ok(Map.of("message", "Senha redefinida com sucesso."));
     }
 }

@@ -44,6 +44,22 @@
       </form>
     </section>
 
+    <div class="modal" id="forgotPasswordModal">
+      <div class="modal-content">
+        <h3>Recuperar senha</h3>
+        <p class="modal-text">Informe seu e-mail para receber as instruções de recuperação de senha.</p>
+
+        <label for="forgotEmailInput" class="label">E-mail</label>
+        <input type="email" id="forgotEmailInput" placeholder="seuemail@exemplo.com" autocomplete="email"/>
+
+        <p id="forgotErrorMsg" class="error" aria-live="polite"></p>
+        <div class="modal-actions">
+          <button id="sendRecoveryBtn" class="btn-modal-primary">Enviar</button>
+          <button id="closeForgotModalBtn" class="btn-modal-secondary">Cancelar</button>
+        </div>
+      </div>
+    </div>
+
     <!-- SISTEMA DE LOGIN ANTIGO
     <div class="users">
       <button type="button" class="user-card" data-user="Isabella" id="userIsabella" data-user-id="3" data-email="isabellamcecilio@outlook.com" aria-pressed="false">
