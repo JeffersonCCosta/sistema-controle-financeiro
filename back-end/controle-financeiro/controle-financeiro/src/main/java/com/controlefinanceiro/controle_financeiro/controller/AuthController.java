@@ -75,7 +75,7 @@ public class AuthController {
 
         usuarioRepository.save(usuario);
 
-        String link = "http://127.0.0.1:5500/Login/reset-password.html?token=" + token;
+        String link = "https://sistema-controle-financeiro.pages.dev/Login/reset-password.html?token=" + token;
         System.out.println("LINK DE RECUPERAÇÃO: " + link);
 
         return ResponseEntity.ok(Map.of(
