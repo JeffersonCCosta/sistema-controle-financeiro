@@ -21,17 +21,14 @@ import java.util.UUID;
 @CrossOrigin(origins = "*")
 public class AuthController {
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
+    private final PasswordEncoder passwordEncoder;
     private final UsuarioRepository usuarioRepository;
+    private final EmailService emailService;
 
-    @Autowired
-    private EmailService emailService;
-
-    public AuthController(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
+    public AuthController(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder, EmailService emailService) {
         this.usuarioRepository = usuarioRepository;
         this.passwordEncoder = passwordEncoder;
+        this.emailService = emailService;
     }
 
     @PostMapping("/login")
