@@ -1,29 +1,50 @@
 package com.controlefinanceiro.controle_financeiro.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 @Service
 public class EmailService {
 
-    @Autowired
-    private JavaMailSender mailSender;
+    @Value("${RESEND_API_KEY}")
+    private String apiKey;
 
     public void enviarEmailRecuperacao(String destino, String link) {
-        SimpleMailMessage mensagem = new SimpleMailMessage();
+        try {
+            URL url = new URL("https://api.resend.com/emails");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
-        mensagem.setTo(destino);
-        mensagem.setSubject("Recuperação de senha - FinControl");
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Authorization", "Bearer " + apiKey);
+            conn.setRequestProperty("Content-Type", "application/json");
 
-        mensagem.setText(
-                "Olá!\n\n" +
-                "Recebemos uma solicitação para redefinir sua senha.\n\n" +
-                "Clique no link abaixo:\n\n" +
-                link +
-                "\n\nEsse link expira em 30 minutos."
-        );
-        mailSender.send(mensagem);
+            conn.setDoOutput(true);
+
+            String json = """
+            {
+              "from": "FinControl <onboarding@resend.dev>",
+              "to": ["%s"],
+              "subject": "Recuperação de senha - FinControl",
+              "html": "<p>Recebemos uma solicitação para redefinir sua senha.</p><p><a href='%s'>Clique aqui para redefinir</a></p>"
+            }
+            """.formatted(destino, link);
+
+            try (OutputStream os = conn.getOutputStream()) {
+                os.write(json.getBytes());
+                os.flush();
+            }
+
+            conn.getResponseCode();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
