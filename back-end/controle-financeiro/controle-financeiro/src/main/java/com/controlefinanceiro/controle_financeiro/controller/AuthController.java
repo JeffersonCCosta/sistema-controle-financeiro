@@ -5,6 +5,7 @@ import com.controlefinanceiro.controle_financeiro.model.dto.ForgotPasswordReques
 import com.controlefinanceiro.controle_financeiro.model.dto.LoginRequestDTO;
 import com.controlefinanceiro.controle_financeiro.model.dto.ResetPasswordRequest;
 import com.controlefinanceiro.controle_financeiro.repository.UsuarioRepository;
+import com.controlefinanceiro.controle_financeiro.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,9 @@ public class AuthController {
     private PasswordEncoder passwordEncoder;
 
     private final UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private EmailService emailService;
 
     public AuthController(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
@@ -76,7 +80,7 @@ public class AuthController {
         usuarioRepository.save(usuario);
 
         String link = "https://sistema-controle-financeiro.pages.dev/Login/reset-password.html?token=" + token;
-        System.out.println("LINK DE RECUPERAÇÃO: " + link);
+        emailService.enviarEmailRecuperacao(usuario.getEmail(), link);
 
         return ResponseEntity.ok(Map.of(
                 "message", "Se o e-mail existir, enviaremos instruções para redefinição."
