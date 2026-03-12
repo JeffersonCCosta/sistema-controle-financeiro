@@ -77,11 +77,27 @@ public class AuthController {
         usuarioRepository.save(usuario);
 
         String link = "https://sistema-controle-financeiro.pages.dev/Login/reset-password.html?token=" + token;
-        emailService.enviarEmailRecuperacao(usuario.getEmail(), link);
+
+        /*emailService.enviarEmailRecuperacao(usuario.getEmail(), link);
 
         return ResponseEntity.ok(Map.of(
                 "message", "Se o e-mail existir, enviaremos instruções para redefinição."
         ));
+
+         */
+
+        try {
+            emailService.enviarEmailRecuperacao(usuario.getEmail(), link);
+
+            return ResponseEntity.ok(Map.of(
+                    "message", "Se o e-mail existir, enviaremos instruções para redefinição."
+            ));
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("message", "Erro ao enviar e-mail de recuperação."));
+        }
     }
 
     @PostMapping("/redefinir-senha")
