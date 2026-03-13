@@ -145,7 +145,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   sendRecoveryBtn?.addEventListener("click", async () => {
     const email = (forgotEmailInput.value || "").trim().toLowerCase();
+    
     forgotErrorMsg.textContent = "";
+    forgotErrorMsg.style.color = "#dc2626";
     
     if(!email) {
       forgotErrorMsg.textContent = "Informe seu e-mail cadastrado.";
@@ -172,6 +174,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (!response.ok) {
         forgotErrorMsg.textContent = data.message || "Erro ao solicitar recuperação.";
+        return;
+      }
+
+      if(data.resetLink) {
+        window.location.href = data.resetLink;
         return;
       }
 
