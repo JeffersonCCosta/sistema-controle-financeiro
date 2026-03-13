@@ -64,7 +64,7 @@ public class AuthController {
 
         if (usuarioOpt.isEmpty()) {
             return ResponseEntity.ok(Map.of(
-                    "message", "Se o e-mail existir, enviaremos instruções para redefinição."
+                    "message", "E-mail não encontrado."
             ));
         }
 
