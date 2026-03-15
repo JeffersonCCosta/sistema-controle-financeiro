@@ -165,6 +165,13 @@ document.addEventListener("DOMContentLoaded", () => {
     setLoading(true);
     setStatus("Criando sua conta...");
 
+    console.log("Campos encontrados:", {
+  nomeInput,
+  emailInput,
+  passwordInput,
+  confirmPasswordInput
+});
+
     try {
       const response = await fetch(`${BASE_URL}/api/auth/cadastro`, {
         method: "POST",
@@ -175,6 +182,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       const data = await response.json();
+      console.log("RESPOSTA CADASTRO:", data);
 
       if (!response.ok) {
         setError(data.message || "Não foi possível realizar o cadastro.");
