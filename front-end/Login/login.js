@@ -147,7 +147,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const email = (forgotEmailInput.value || "").trim().toLowerCase();
     
     forgotErrorMsg.textContent = "";
-    forgotErrorMsg.style.color = "#dc2626";
+    forgotErrorMsg.style.color = "#16a34a";
     
     if(!email) {
       forgotErrorMsg.textContent = "Informe seu e-mail cadastrado.";
@@ -182,7 +182,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      forgotErrorMsg.style.color = "#16a34a";
+      forgotErrorMsg.style.color = "#dc2626";
       forgotErrorMsg.textContent = data.message || "Solicitação enviada com sucesso.";
     } catch (error) {
       console.error(error);
@@ -192,7 +192,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   registerLink?.addEventListener("click", (e) => {
     e.preventDefault();
-    alert("Em breve: tela de cadastro.");
+    window.location.href = "../Registrar/registrar.html"
   });
 
   function setStatus(message) {

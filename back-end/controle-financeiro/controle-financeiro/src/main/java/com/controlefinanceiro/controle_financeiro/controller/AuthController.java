@@ -47,13 +47,57 @@ public class AuthController {
                     .body("Senha inválida!");
         }
 
-        return ResponseEntity.ok(usuario);
+        //return ResponseEntity.ok(usuario);
+
+        return ResponseEntity.ok(Map.of(
+                "id", usuario.getId(),
+                "nome", usuario.getNome(),
+                "email", usuario.getEmail()
+        ));
     }
 
+
+
+    /* Cadastro antigo
     @PostMapping("/cadastro")
     public Usuario criar(@RequestBody Usuario usuario){
         usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
         return usuarioRepository.save(usuario);
+    }
+     */
+
+    /*Cadastro Novo*/
+    @PostMapping("/cadastro")
+    public ResponseEntity <?> criar(@RequestBody Usuario usuario) {
+        if (usuario.getNome() == null || usuario.getNome().trim().isEmpty()) {
+            return ResponseEntity.badRequest().body(Map.of("message", "Nome é obrigatório."));
+        }
+
+        if (usuario.getEmail() == null || usuario.getEmail().trim().isEmpty()) {
+            return ResponseEntity.badRequest().body(Map.of("message", "E-mail é obrigatório."));
+        }
+
+        if (usuario.getSenha() == null || usuario.getSenha().trim().isEmpty()) {
+            return ResponseEntity.badRequest().body(Map.of("message", "Senha é obrigatório."));
+        }
+
+        if (usuarioRepository.findByEmail(usuario.getEmail().trim().toLowerCase()).isPresent()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(Map.of("message", "Já existe um usuário cadastrado com esse e-mail."));
+        }
+
+        usuario.setEmail(usuario.getEmail().trim().toLowerCase());
+        usuario.setNome(usuario.getNome().trim());
+        usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
+
+        Usuario novoUsusario = usuarioRepository.save(usuario);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(Map.of(
+                "message", "Usuário cadastrado com sucesso.",
+                "id", novoUsusario.getId(),
+                "nome", novoUsusario.getNome(),
+                "email", novoUsusario.getEmail()
+        ));
     }
 
     @PostMapping("/esqueci-senha")
@@ -64,7 +108,7 @@ public class AuthController {
 
         if (usuarioOpt.isEmpty()) {
             return ResponseEntity.ok(Map.of(
-                    "message", "E-mail não encontrado."
+                    "message", "Se o e-mail existir, enviaremos as instruções de recuperação."
             ));
         }
 
