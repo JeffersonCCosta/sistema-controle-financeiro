@@ -13,13 +13,17 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String nome;
 
+    @Column(nullable = false, unique = true)
     private String email;
 
     @JsonIgnore
+    @Column(nullable = false)
     private String senha;
+
+    @Column(nullable = false)
     private String tipo_usuario;
 
     @Column(nullable = false, name = "criado_em")

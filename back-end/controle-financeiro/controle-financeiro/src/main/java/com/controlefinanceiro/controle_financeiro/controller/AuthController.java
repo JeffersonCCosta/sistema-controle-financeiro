@@ -76,7 +76,7 @@ public class AuthController {
         if (usuario.getEmail() == null || usuario.getEmail().trim().isEmpty()) {
             return ResponseEntity.badRequest().body(Map.of("message", "E-mail é obrigatório."));
         }
-
+        
         if (usuario.getSenha() == null || usuario.getSenha().trim().isEmpty()) {
             return ResponseEntity.badRequest().body(Map.of("message", "Senha é obrigatório."));
         }
@@ -89,6 +89,7 @@ public class AuthController {
         usuario.setEmail(usuario.getEmail().trim().toLowerCase());
         usuario.setNome(usuario.getNome().trim());
         usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
+        usuario.setTipo_usuario("USER");
 
         Usuario novoUsusario = usuarioRepository.save(usuario);
 
@@ -96,7 +97,8 @@ public class AuthController {
                 "message", "Usuário cadastrado com sucesso.",
                 "id", novoUsusario.getId(),
                 "nome", novoUsusario.getNome(),
-                "email", novoUsusario.getEmail()
+                "email", novoUsusario.getEmail(),
+                "tipo_ususario", novoUsusario.getTipo_usuario()
         ));
     }
 
