@@ -76,7 +76,7 @@ public class AuthController {
         if (usuario.getEmail() == null || usuario.getEmail().trim().isEmpty()) {
             return ResponseEntity.badRequest().body(Map.of("message", "E-mail é obrigatório."));
         }
-        
+
         if (usuario.getSenha() == null || usuario.getSenha().trim().isEmpty()) {
             return ResponseEntity.badRequest().body(Map.of("message", "Senha é obrigatório."));
         }

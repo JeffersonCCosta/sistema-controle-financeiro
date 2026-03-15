@@ -5,7 +5,7 @@ const statusMsg = document.getElementById("statusMsg");
 
 document.addEventListener("DOMContentLoaded", () => {
   // Se já estiver logado, manda direto pro sistema
-  const jaLogado = localStorage.getItem("usuarioLogado");
+  const jaLogado = sessionStorage.getItem("usuarioLogado");
   if (jaLogado) {
     window.location.href = "../Principal/Principal.html";
     return;
@@ -254,11 +254,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const usuario = await response.json();
 
-      localStorage.setItem("usuarioLogado", JSON.stringify(usuario));
+      sessionStorage.setItem("usuarioLogado", JSON.stringify(usuario));
       localStorage.setItem("selectedUserEmail", email);
 
-      if (usuario?.id != null) localStorage.setItem("selectedUserId", String(usuario.id));
-      if (usuario?.nome) localStorage.setItem("selectedUser", usuario.nome);
+      if (usuario?.id != null) sessionStorage.setItem("selectedUserId", String(usuario.id));
+      if (usuario?.nome) sessionStorage.setItem("selectedUser", usuario.nome);
 
       window.location.href = "../Principal/Principal.html";
     } catch (err) {
