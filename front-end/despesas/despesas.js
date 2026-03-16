@@ -27,7 +27,7 @@ async function carregarDespesas() {
     if (!tabelaExiste) return;
 
     try {
-        const userId = localStorage.getItem("selectedUserId");
+        const userId = sessionStorage.getItem("selectedUserId");
         const resp = await fetch (`${window.API.DESPESAS}/usuario/${userId}`);
         const despesas = await resp.json();
 
@@ -74,7 +74,7 @@ function preencherTabelaDespesas(lista) {
         e.preventDefault();
         console.log("SUBMIT FUNCIONOU");
         
-        const userId = localStorage.getItem("selectedUserId");
+        const userId = sessionStorage.getItem("selectedUserId");
         const despesa = {
             descricao: document.getElementById("descricao").value,
             valor: document.getElementById("valor").value,

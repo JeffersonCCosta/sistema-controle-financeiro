@@ -255,7 +255,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const usuario = await response.json();
 
       sessionStorage.setItem("usuarioLogado", JSON.stringify(usuario));
-      localStorage.setItem("selectedUserEmail", email);
+      sessionStorage.setItem("selectedUserEmail", email);
 
       if (usuario?.id != null) sessionStorage.setItem("selectedUserId", String(usuario.id));
       if (usuario?.nome) sessionStorage.setItem("selectedUser", usuario.nome);

@@ -5,7 +5,7 @@ window.grafico = window.grafico ?? null;
     let despesasData = [];
 
     async function carregarDashboard() {
-        const userId = localStorage.getItem("selectedUserId");
+        const userId = sessionStorage.getItem("selectedUserId");
         
         if (!userId) {
             console.error("Usuário não encontrado");

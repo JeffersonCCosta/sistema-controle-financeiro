@@ -31,7 +31,7 @@ async function carregarReceitas() {
     if (!tabelaExiste) return;
 
     try {
-        const userId = localStorage.getItem("selectedUserId");
+        const userId = sessionStorage.getItem("selectedUserId");
         const resp = await fetch(`${window.API.RECEITAS}/usuario/${userId}`);
         const receitas = await resp.json();
 
@@ -79,7 +79,7 @@ function preencherTabelaReceitas(lista) {
 document.getElementById("formReceita").addEventListener("submit", async function (e) {
     e.preventDefault();
 
-    const userId = localStorage.getItem("selectedUserId");
+    const userId = sessionStorage.getItem("selectedUserId");
     const receita = {
         descricao: descricao.value,
         valor: valor.value,
