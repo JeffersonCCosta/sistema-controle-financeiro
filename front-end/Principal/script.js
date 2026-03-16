@@ -1,4 +1,4 @@
-const usuario = localStorage.getItem("usuarioLogado");
+const usuario = sessionStorage.getItem("usuarioLogado");
 const logoutBtn = document.getElementById("logout");
 const logoutModal = document.getElementById("logoutModal");
 const confirmLogout = document.getElementById("confirmLogout");
@@ -293,7 +293,7 @@ cancelLogout?.addEventListener("click", () => {
 });
 
 confirmLogout?.addEventListener("click", () => {
-    localStorage.clear();
+    sessionStorage.clear();
     window.location.href = "../Login/login.html";
 });
 
